@@ -8,12 +8,14 @@
 // update. Deleting the comments indicating the section will prevent
 // it from being updated in the future.
 
-
 package frc.robot;
 
-import frc.robot.commands.*;
+import java.security.PublicKey;
+
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.commands.StickDrive;
+import frc.robot.subsystems.Drive;
 
 
 /**
@@ -21,17 +23,44 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class RobotContainer {
-    
-    public Joystick driveStick;
 
+
+    private final Drive drive = new Drive();
+
+    private final StickDrive m_autoCommand = new StickDrive(drive);
+
+    public Joystick driveStick = new Joystick(0);
+
+    /**
+   * The container for the robot.  Contains subsystems, OI devices, and commands.
+   */
     public RobotContainer() {
+        // Configure the button bindings
+        configureButtonBindings();
+    }
 
-        driveStick = new Joystick(0);
+    /**
+    * Use this method to define your button->command mappings.  Buttons can be created by
+    * instantiating a {@link GenericHID} or one of its subclasses ({@link
+    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a
+    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+    */
+    private void configureButtonBindings() {
 
-
+        
 
     }
 
+
+    /**
+    * Use this to pass the autonomous command to the main {@link Robot} class.
+    *
+    * @return the command to run in autonomous
+    */
+    public Command getAutonomousCommand() {
+        // An ExampleCommand will run in autonomous
+        return m_autoCommand;
+    }
 
 }
 
