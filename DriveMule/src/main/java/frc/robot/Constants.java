@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 
-public class RobotMap {
+public class Constants {
 
     public static CANSparkMax spark1;
     public static CANSparkMax spark2;

@@ -1,15 +1,18 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
-import frc.robot.RobotMap;
+import frc.robot.Constants;
 import frc.robot.subsystems.Drive;
 
 
 
-public class StickDrive extends Command {
+public class StickDrive extends CommandBase {
+
+	private final Drive m_Drive;
 
     static final double DEADZONE = .07;
 
@@ -78,18 +81,19 @@ public class StickDrive extends Command {
 			new JoystickResponseCurve(.40, 3, 1.0, DEADZONE));
 
 
-    public StickDrive() {
-        requires(Robot.drive);
+    public StickDrive(Drive drive) {
+		m_Drive = drive;
+        addRequirements(drive);
     }
 
 
     @Override
-    protected void initialize() {
+    public void initialize() {
         SmartDashboard.putBoolean("Stick Init", true);
     }
 
     @Override
-    protected void execute() {
+    public void execute() {
 
         JoystickResponseCurveSet slow = conservative;
 		JoystickResponseCurveSet fast = aggressive;
@@ -110,7 +114,7 @@ public class StickDrive extends Command {
             SmartDashboard.putBoolean("Slow Drive Profile", false);
         }
 
-        if (RobotMap.robotDrive != null) {
+        if (Constants.robotDrive != null) {
             Robot.drive.setDrive(vY, vRot);
         }
 
@@ -118,18 +122,16 @@ public class StickDrive extends Command {
 
 
     @Override
-    protected boolean isFinished() {
+    public boolean isFinished() {
         return false;
     }
 
     @Override
-    protected void end() {
+    public void end(boolean interrupted) {
         Robot.drive.setDrive(0, 0);
     }
 
-    @Override
-    protected void interrupted() {
-        Robot.drive.setDrive(0, 0);
-    }
+
+
 
 }
