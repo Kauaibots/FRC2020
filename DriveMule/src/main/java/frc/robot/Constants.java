@@ -13,6 +13,8 @@ public class Constants {
     public static CANSparkMax spark2;
     public static CANSparkMax spark3;
     public static CANSparkMax spark4;
+    public static CANSparkMax spark5;
+    public static CANSparkMax spark6;
     public static SpeedControllerGroup m_left;
     public static SpeedControllerGroup m_right;
     public static DifferentialDrive robotDrive;
@@ -26,14 +28,21 @@ public class Constants {
         spark2.setInverted(false);
 
         spark3 = new CANSparkMax(3, CANSparkMaxLowLevel.MotorType.kBrushless);
-       spark3.setInverted(true);
+       spark3.setInverted(false);
        
         spark4 = new CANSparkMax(4, CANSparkMaxLowLevel.MotorType.kBrushless);
         spark4.setInverted(true);
+
+        spark5 = new CANSparkMax(5, CANSparkMaxLowLevel.MotorType.kBrushless);
+        spark5.setInverted(true);
+
+        spark6 = new CANSparkMax(6, CANSparkMaxLowLevel.MotorType.kBrushless);
+        spark6.setInverted(true);
+
         
-        m_left = new SpeedControllerGroup(spark1, spark2);
+        m_left = new SpeedControllerGroup(spark1, spark2, spark3);
         
-        m_right = new SpeedControllerGroup(spark3, spark4);
+        m_right = new SpeedControllerGroup(spark4, spark5, spark6);
 
         robotDrive = new DifferentialDrive(m_left, m_right);
         robotDrive.setRightSideInverted(false);
