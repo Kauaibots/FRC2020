@@ -46,6 +46,7 @@ public class Constants {
 
         robotDrive = new DifferentialDrive(m_left, m_right);
         robotDrive.setRightSideInverted(false);
+        robotDrive.setSafetyEnabled(false);
         
 
     }
