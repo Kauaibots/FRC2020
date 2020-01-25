@@ -10,6 +10,8 @@
 
 package frc.robot;
 
+import java.security.PublicKey;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.DriveIntake;
@@ -27,7 +29,7 @@ public class RobotContainer {
 
     private final Drive drive = new Drive();
 
-    private final StickDrive stickDrive = new StickDrive(drive);
+    private final StickDrive m_autoCommand = new StickDrive(drive);
 
     public Joystick driveStick = new Joystick(0);
 
@@ -41,8 +43,6 @@ public class RobotContainer {
     public RobotContainer() {
         // Configure the button bindings
         configureButtonBindings();
-
-        drive.setDefaultCommand(stickDrive);
     }
 
     /**
@@ -65,7 +65,7 @@ public class RobotContainer {
     */
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
-        return stickDrive;
+        return m_autoCommand;
     }
 
 }
