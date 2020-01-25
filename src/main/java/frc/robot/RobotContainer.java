@@ -31,7 +31,7 @@ public class RobotContainer {
 
     public Joystick driveStick = new Joystick(0);
 
-    public Funnel funnel = new Funnel();
+    public static Funnel funnel = new Funnel();
 
     public DriveIntake driveIntake = new DriveIntake(funnel, 0);
 

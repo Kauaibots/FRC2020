@@ -18,10 +18,10 @@ import frc.robot.subsystems.*;
 
 public class DriveIntake extends CommandBase {
 
-    public final Subsystem[] m_Funnel;
+    public final Funnel m_Funnel;
     double power = 0;
 
-    public DriveIntake(Subsystem[] funnel, double power) {
+    public DriveIntake(Funnel funnel, double power) {
             m_Funnel = funnel;
             addRequirements(funnel);
             this.power = power;
