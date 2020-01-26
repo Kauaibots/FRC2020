@@ -12,7 +12,7 @@ import frc.robot.subsystems.Drive;
 
 public class StickDrive extends CommandBase {
 
-	private final Drive m_Drive;
+    private final Drive drive = Robot.drive;
 
 	static final double DEADZONE = .07;
 
@@ -76,7 +76,6 @@ public class StickDrive extends CommandBase {
 			new JoystickResponseCurve(0, 0, 0, DEADZONE), new JoystickResponseCurve(.40, 3, 1.0, DEADZONE));
 
 	public StickDrive(final Drive drive) {
-		m_Drive = drive;
 		addRequirements(drive);
 	}
 
@@ -91,7 +90,7 @@ public class StickDrive extends CommandBase {
 		final JoystickResponseCurveSet slow = conservative;
 		final JoystickResponseCurveSet fast = aggressive;
 
-		final Joystick driver = Robot.oi.driveStick;
+		final Joystick driver = Robot.robotContainer.driveStick;
 
 		double vY = -driver.getY();
 		double vRot = driver.getRawAxis(4);
@@ -110,6 +109,19 @@ public class StickDrive extends CommandBase {
 			((Drive) drive).setDrive(vY, vRot);
 		}
 
+
+/*
+		if (driver.getRawButton(7)) {
+			Constants.intakeMotor.set(Math.abs(driver.getRawAxis(2)));
+		}
+		else if (driver.getRawButton(8)) {
+			Constants.intakeMotor.set(-Math.abs(driver.getRawAxis(2)));
+		}
+		else {
+			Constants.intakeMotor.set(0);
+		}
+*/
+
 	}
 
 	@Override
@@ -119,7 +131,7 @@ public class StickDrive extends CommandBase {
 
 	@Override
 	public void end(final boolean interrupted) {
-		((Drive) drive).setDrive(0, 0);
+		drive.setDrive(0, 0);
     }
 
 

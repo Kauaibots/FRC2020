@@ -40,8 +40,6 @@ public class Constants {
 
         spark6 = new CANSparkMax(6, CANSparkMaxLowLevel.MotorType.kBrushless);
         spark6.setInverted(true);
-
-        intakeMotor = new WPI_TalonSRX(1);
         
         m_left = new SpeedControllerGroup(spark1, spark2, spark3);
         
@@ -49,7 +47,10 @@ public class Constants {
 
         robotDrive = new DifferentialDrive(m_left, m_right);
         robotDrive.setRightSideInverted(false);
+        robotDrive.setSafetyEnabled(false);
         
+
+        intakeMotor = new WPI_TalonSRX(1);
 
     }
 
