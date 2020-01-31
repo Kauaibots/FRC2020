@@ -16,6 +16,7 @@ import java.nio.file.Path;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
@@ -105,18 +106,18 @@ public class RobotContainer {
 
         RamseteCommand ramseteCommand = new RamseteCommand(
             trajectory,
-            m_robotDrive::getPose,
+            Constants.robotDrive::getPose,
             new RamseteController(AutoConstants.kRamseteB, AutoConstants.kRamseteZeta),
             new SimpleMotorFeedforward(DriveConstants.ksVolts,
                                        DriveConstants.kvVoltSecondsPerMeter,
                                        DriveConstants.kaVoltSecondsSquaredPerMeter),
             DriveConstants.kDriveKinematics,
-            m_robotDrive::getWheelSpeeds,
+            Constants.robotDrive::getWheelSpeeds,
             new PIDController(DriveConstants.kPDriveVel, 0, 0),
             new PIDController(DriveConstants.kPDriveVel, 0, 0),
             // RamseteCommand passes volts to the callback
-            m_robotDrive::tankDriveVolts,
-            m_robotDrive
+            Constants.robotDrive::tankDriveVolts,
+            Constants.robotDrive
         );
     }
 
