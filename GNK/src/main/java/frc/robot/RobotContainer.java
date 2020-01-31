@@ -10,13 +10,23 @@
 
 package frc.robot;
 
+import java.io.IOException;
+import java.nio.file.Path;
+
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj2.command.button.Button;
+import edu.wpi.first.wpilibj.controller.RamseteController;
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.SetIntake;
 import frc.robot.commands.StickDrive;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Funnel;
+import frc.robot.subsystems.Funnel.IntakeState;
 
 
 /**
@@ -48,7 +58,7 @@ public class RobotContainer {
 
         drive.setDefaultCommand(stickDrive);
 
-        funnel.setDefaultCommand(new SetIntake(0));
+        funnel.setDefaultCommand(new SetIntake(IntakeState.STOP));
 
     }
 
@@ -60,8 +70,8 @@ public class RobotContainer {
     */
     private void configureButtonBindings() {
 
-        intakeIn.whileHeld(new SetIntake(1));
-        intakeOut.whileHeld(new SetIntake(-1));
+        intakeIn.whileHeld(new SetIntake(IntakeState.IN));
+        intakeOut.whileHeld(new SetIntake(IntakeState.OUT));
 
     }
 
@@ -71,10 +81,44 @@ public class RobotContainer {
     *
     * @return the command to run in autonomous
     */
- //   public Command getAutonomousCommand() {
- //       // An ExampleCommand will run in autonomous
- //       return m_autoCommand;
- //   }
+    public Command getAutonomousCommand() {
+        // An ExampleCommand will run in autonomous
+
+        configurePathFinder();
+
+        return m_autoCommand;
+    }
+
+    public void configurePathFinder() {
+        String trajectoryJSON = "paths/YourPath.wpilib.json";
+
+        Path trajectoryPath;
+        Trajectory trajectory;
+
+        try {
+        trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
+        trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+        } 
+        catch (IOException ex) {
+        DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
+        }
+
+        RamseteCommand ramseteCommand = new RamseteCommand(
+            trajectory,
+            m_robotDrive::getPose,
+            new RamseteController(AutoConstants.kRamseteB, AutoConstants.kRamseteZeta),
+            new SimpleMotorFeedforward(DriveConstants.ksVolts,
+                                       DriveConstants.kvVoltSecondsPerMeter,
+                                       DriveConstants.kaVoltSecondsSquaredPerMeter),
+            DriveConstants.kDriveKinematics,
+            m_robotDrive::getWheelSpeeds,
+            new PIDController(DriveConstants.kPDriveVel, 0, 0),
+            new PIDController(DriveConstants.kPDriveVel, 0, 0),
+            // RamseteCommand passes volts to the callback
+            m_robotDrive::tankDriveVolts,
+            m_robotDrive
+        );
+    }
 
 }
 

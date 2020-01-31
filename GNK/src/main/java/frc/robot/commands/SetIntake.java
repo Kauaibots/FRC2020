@@ -2,24 +2,36 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
-import frc.robot.RobotContainer;
 import frc.robot.subsystems.*;
+import frc.robot.subsystems.Funnel.IntakeState;
 
 public class SetIntake extends CommandBase {
 
     private final Funnel funnel = Robot.funnel;
 
-    double power = 0;
+    IntakeState state = IntakeState.STOP;
 
-    public SetIntake(double power) {
+    double power = 1.0;
+
+    public SetIntake(IntakeState state) {
         addRequirements(funnel);
-        this.power = power;
+        this.state = state;
     }
 
     @Override
     public void execute() {
-        funnel.setIntake(power); 
 
+        switch (state) {
+            case IN:
+                funnel.setIntake(power);
+                break;
+            case OUT:
+                funnel.setIntake(-power);
+                break;
+            case STOP:
+                funnel.setIntake(0);
+                break;
+        }
     }
 
 

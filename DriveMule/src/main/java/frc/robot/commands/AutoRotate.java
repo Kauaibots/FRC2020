@@ -6,17 +6,18 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpiutil.math.MathUtil;
 
 
-    public class AutoRotate extends CommandBase  {
+public class AutoRotate extends CommandBase  {
       
-        private final double kP = 0.0;
+    private final double kP = 0.0;
     private final double kI = 0.0;
     private final double kD = 0.0;
-        private double pidOut;
+    private double pidOut;
+
     @Override
     public void initialize() {
         
 
-    PIDController pid = new PIDController(kP, kI, kD);
+        PIDController pid = new PIDController(kP, kI, kD);
 
         pidOut = pid.calculate(1, 1);
        

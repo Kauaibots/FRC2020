@@ -1,0 +1,44 @@
+package frc.robot.commands;
+
+import java.nio.file.Paths;
+
+import edu.wpi.first.wpilibj.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
+import frc.robot.subsystems.Drive;
+
+public class PathTesting extends CommandBase {
+
+
+	private final Drive m_Drive;
+    
+    Trajectory trajectory;
+
+    public PathTesting() {
+
+    }
+
+
+    @Override
+    public void initialize() {
+        trajectory = TrajectoryUtil.fromPathweaverJson(Paths.get("/home/lvuser/deploy/pathweaver.json"));
+    }
+
+    RamseteCommand ramseteCommand = new RamseteCommand(
+        trajectory,
+        m_Drive::getPose,
+        new RamseteController(AutoConstants.kRamseteB, AutoConstants.kRamseteZeta),
+        new SimpleMotorFeedforward(DriveConstants.ksVolts,
+                                   DriveConstants.kvVoltSecondsPerMeter,
+                                   DriveConstants.kaVoltSecondsSquaredPerMeter),
+        DriveConstants.kDriveKinematics,
+        m_robotDrive::getWheelSpeeds,
+        new PIDController(DriveConstants.kPDriveVel, 0, 0),
+        new PIDController(DriveConstants.kPDriveVel, 0, 0),
+        // RamseteCommand passes volts to the callback
+        m_robotDrive::tankDriveVolts,
+        m_robotDrive
+    );
+
+}

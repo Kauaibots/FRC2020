@@ -8,6 +8,8 @@ import frc.robot.Constants;
 
         private final WPI_TalonSRX intakeMotor = Constants.intakeMotor;
 
+        public enum IntakeState { IN, OUT, STOP };
+
         public Funnel () {
 
         }
