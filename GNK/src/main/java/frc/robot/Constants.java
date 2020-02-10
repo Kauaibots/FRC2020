@@ -28,9 +28,15 @@ public class Constants {
     public static CANEncoder rightEncoder;
 
 
-    private final static double encoderConversionValue = 1/(4.5/12);  //inverse of ticks per inch
+    public static WPI_TalonSRX roller1;
+    public static WPI_TalonSRX roller2;
+    public static WPI_TalonSRX roller3;
+    public static WPI_TalonSRX roller4;
+    public static WPI_TalonSRX roller5;
 
-    public static WPI_TalonSRX intakeMotor;
+
+
+    private final static double encoderConversionValue = 1/(4.5/12);  //inverse of ticks per inch
    
 
     public static void init() {
@@ -74,8 +80,17 @@ public class Constants {
         rightEncoder.setPositionConversionFactor(encoderConversionValue);
 
 
-        intakeMotor = new WPI_TalonSRX(1);
+        roller1 = new WPI_TalonSRX(1);
+        roller2 = new WPI_TalonSRX(2);
+        roller3 = new WPI_TalonSRX(3);
+        roller4 = new WPI_TalonSRX(4);
+        roller5 = new WPI_TalonSRX(5);
 
+        roller1.setInverted(true);
+        roller2.setInverted(true);
+        roller3.setInverted(true);
+        roller4.setInverted(true);
+        roller5.setInverted(true);
     }
 
 }

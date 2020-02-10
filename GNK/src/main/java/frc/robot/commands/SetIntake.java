@@ -23,13 +23,13 @@ public class SetIntake extends CommandBase {
 
         switch (state) {
             case IN:
-                funnel.setIntake(power);
+                funnel.setRoller1(power);
                 break;
             case OUT:
-                funnel.setIntake(-power);
+                funnel.setRoller1(-power);
                 break;
             case STOP:
-                funnel.setIntake(0);
+                funnel.setRoller1(0);
                 break;
         }
     }
@@ -43,7 +43,7 @@ public class SetIntake extends CommandBase {
 
 	@Override
 	public void end(final boolean interrupted) {
-        funnel.setIntake(0);
+        funnel.setRoller1(0);
     }
 
 

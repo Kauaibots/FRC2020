@@ -21,8 +21,10 @@ import edu.wpi.first.wpilibj.controller.RamseteController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.ManualSliderFunnel;
 import frc.robot.commands.SetIntake;
 import frc.robot.commands.StickDrive;
 import frc.robot.subsystems.Drive;
@@ -42,11 +44,10 @@ public class RobotContainer {
 
     private final StickDrive stickDrive = new StickDrive(drive);
 
+    private final ManualSliderFunnel manFunnel = new ManualSliderFunnel();
+
     public Joystick driveStick = new Joystick(0);
 
-
-    JoystickButton intakeIn = new JoystickButton(driveStick, 7);
-    JoystickButton intakeOut = new JoystickButton(driveStick, 8);
     
 
 
@@ -59,7 +60,7 @@ public class RobotContainer {
 
         drive.setDefaultCommand(stickDrive);
 
-        funnel.setDefaultCommand(new SetIntake(IntakeState.STOP));
+        funnel.setDefaultCommand(manFunnel);
 
     }
 
@@ -71,8 +72,6 @@ public class RobotContainer {
     */
     private void configureButtonBindings() {
 
-        intakeIn.whileHeld(new SetIntake(IntakeState.IN));
-        intakeOut.whileHeld(new SetIntake(IntakeState.OUT));
 
     }
 
@@ -87,11 +86,11 @@ public class RobotContainer {
 
         configurePathFinder();
 
-        return m_autoCommand;
+        return new StickDrive(drive);
     }
 
     public void configurePathFinder() {
-        String trajectoryJSON = "paths/YourPath.wpilib.json";
+        String trajectoryJSON = "paths/Test.wpilib.json";
 
         Path trajectoryPath;
         Trajectory trajectory;
@@ -104,7 +103,7 @@ public class RobotContainer {
         DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
         }
 
-        RamseteCommand ramseteCommand = new RamseteCommand(
+    /*    RamseteCommand ramseteCommand = new RamseteCommand(
             trajectory,
             Constants.robotDrive::getPose,
             new RamseteController(AutoConstants.kRamseteB, AutoConstants.kRamseteZeta),
@@ -118,7 +117,7 @@ public class RobotContainer {
             // RamseteCommand passes volts to the callback
             Constants.robotDrive::tankDriveVolts,
             Constants.robotDrive
-        );
+        );  */
     }
 
 }
