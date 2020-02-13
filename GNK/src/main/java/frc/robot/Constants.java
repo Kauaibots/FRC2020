@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.SPI;
 
 public class Constants {
@@ -33,6 +34,12 @@ public class Constants {
     public static WPI_TalonSRX roller3;
     public static WPI_TalonSRX roller4;
     public static WPI_TalonSRX roller5;
+
+    public static AnalogInput ir1;
+    public static AnalogInput ir2;
+    public static AnalogInput ir3;
+    public static AnalogInput ir4;
+    public static AnalogInput ir5;
 
 
 
@@ -91,6 +98,13 @@ public class Constants {
         roller3.setInverted(true);
         roller4.setInverted(true);
         roller5.setInverted(true);
+
+        ir1 = new AnalogInput(0);
+        ir2 = new AnalogInput(1);
+        ir3 = new AnalogInput(2);
+        ir4 = new AnalogInput(3);
+        ir5 = new AnalogInput(4);
+
     }
 
 }

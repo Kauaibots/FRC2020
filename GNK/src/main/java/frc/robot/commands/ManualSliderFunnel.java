@@ -5,13 +5,12 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.*;
-import frc.robot.subsystems.Funnel.IntakeState;
 
 public class ManualSliderFunnel extends CommandBase {
 
     private final Funnel funnel = Robot.funnel;
 
-    double power = .4;
+    double power = 1.0;
 
 
     //stage --- A number 0 to 5.9 stating which stages of the funnel to run.

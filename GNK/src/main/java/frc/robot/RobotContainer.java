@@ -25,11 +25,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.ManualSliderFunnel;
-import frc.robot.commands.SetIntake;
 import frc.robot.commands.StickDrive;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Funnel;
-import frc.robot.subsystems.Funnel.IntakeState;
 
 
 /**

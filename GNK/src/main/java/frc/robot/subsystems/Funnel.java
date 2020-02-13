@@ -1,6 +1,8 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -12,7 +14,12 @@ import frc.robot.Constants;
         private final WPI_TalonSRX roller4 = Constants.roller4;
         private final WPI_TalonSRX roller5 = Constants.roller5;
 
-        public enum IntakeState { IN, OUT, STOP };
+        private final AnalogInput ir1 = Constants.ir1;
+        private final AnalogInput ir2 = Constants.ir2;
+        private final AnalogInput ir3 = Constants.ir3;
+        private final AnalogInput ir4 = Constants.ir4;
+        private final AnalogInput ir5 = Constants.ir5;
+
 
         public Funnel () {
 
@@ -38,8 +45,15 @@ import frc.robot.Constants;
         public void setRoller4(double power) {
             roller4.set(power);
         }
+
         public void setRoller5(double power) {
             roller5.set(power);
+        }
+
+        public boolean getIR1() {
+            ir1.getAverageVoltage();
+
+            return false;
         }
 
 
