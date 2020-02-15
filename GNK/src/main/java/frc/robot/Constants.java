@@ -103,7 +103,7 @@ public class Constants {
         ir2 = new AnalogInput(1);
         ir3 = new AnalogInput(2);
         ir4 = new AnalogInput(3);
-        ir5 = new AnalogInput(4);
+        ir5 = new AnalogInput(6);
 
     }
 
