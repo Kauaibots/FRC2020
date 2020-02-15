@@ -10,6 +10,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PWMVictorSPX;
 //import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -21,6 +22,8 @@ public class Lift1 extends SubsystemBase {
   private CANSparkMax LiftSpark = new CANSparkMax(7, MotorType.kBrushless);
   private PWMVictorSPX Servo1 = new PWMVictorSPX(1);
   public enum LiftMotion {Up, Down, Stop};
+  private DigitalInput SensorUp = new DigitalInput(0);
+  private DigitalInput SensorDown = new DigitalInput(1);
   //public enum ServoPosition{Armed, Disarmed};
   public LiftMotion motion = LiftMotion.Stop;
   //public ServoPosition position = ServoPosition.Armed;
@@ -48,11 +51,33 @@ public class Lift1 extends SubsystemBase {
   
   public void UP()
   {
-    LiftSpark.set(.5);
+    double Speed = 0;
+    SensorUp.get();
+    if(SensorUp.get() == true)
+    {
+      Speed = .5;
+    }
+    else if(SensorUp.get() == false)
+    {
+      Speed = 0;
+      System.out.println("Warning: Lift 1 is fully extended");
+    }
+    LiftSpark.set(Speed);
   }
   public void DOWN()
   {
-    LiftSpark.set(-.5);
+    double Speed2 = 0;
+    SensorDown.get();
+    if(SensorDown.get() == true)
+    {
+      Speed2 = -.5;
+    }
+    else if(SensorDown.get() == false)
+    {
+      Speed2 = 0;
+      System.out.println("Warning: Lift 1 is fully retracted");
+    }
+    LiftSpark.set(Speed2);
   }
   public void STOP()
   {
