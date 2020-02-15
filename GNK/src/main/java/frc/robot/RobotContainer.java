@@ -23,11 +23,24 @@ import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
+import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.ManualSliderFunnel;
 import frc.robot.commands.StickDrive;
+import frc.robot.commands.Lift1.Motor.DOWN;
+import frc.robot.commands.Lift1.Motor.STOP;
+import frc.robot.commands.Lift1.Motor.UP;
+import frc.robot.commands.Lift1.Servo.ARMED;
+import frc.robot.commands.Lift1.Servo.DISARMED;
+import frc.robot.commands.Lift2.Motor.DOWN2;
+import frc.robot.commands.Lift2.Motor.STOP2;
+import frc.robot.commands.Lift2.Motor.UP2;
+import frc.robot.commands.Lift2.Servo.ARMED2;
+import frc.robot.commands.Lift2.Servo.DISARMED2;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Funnel;
+import frc.robot.subsystems.Lift1;
+import frc.robot.subsystems.Lift2;
 
 
 /**
@@ -39,12 +52,23 @@ public class RobotContainer {
 
     private final Drive drive = Robot.drive;
     public static Funnel funnel = Robot.funnel;
+    private final Lift2 Lift2 = Robot.Lift2;
+    private final Lift1 Lift = Robot.Lift;
 
     private final StickDrive stickDrive = new StickDrive(drive);
 
     private final ManualSliderFunnel manFunnel = new ManualSliderFunnel();
 
     public Joystick driveStick = new Joystick(0);
+    public Joystick arduino = new Joystick(1);
+    Button LiftUp;
+    Button LiftDown;
+    Button ServoArmed;
+    Button ServoDisarmed;
+    Button LiftUp2;
+    Button LiftDown2;
+    Button ServoArmed2;
+    Button ServoDisarmed2;
 
     
 
@@ -54,11 +78,31 @@ public class RobotContainer {
    */
     public RobotContainer() {
         // Configure the button bindings
-        configureButtonBindings();
+        //configureButtonBindings();
+        LiftUp = new JoystickButton(arduino, 10);
+        LiftDown = new JoystickButton(arduino, 12);
+        ServoArmed = new JoystickButton(arduino, 7);
+        ServoDisarmed = new JoystickButton(arduino, 8);
+        LiftUp2 = new JoystickButton(arduino, 9);
+        LiftDown2 = new JoystickButton(arduino, 11);
+        ServoArmed2 = new JoystickButton(arduino, 5);
+        ServoDisarmed2 = new JoystickButton(arduino, 4);
+
+        LiftUp.whileHeld(new UP());
+        LiftDown.whileHeld(new DOWN());
+        ServoArmed.whenPressed(new ARMED());
+        ServoDisarmed.whenPressed(new DISARMED());
+        LiftUp2.whileHeld(new UP2());
+        LiftDown2.whileHeld(new DOWN2());
+        ServoArmed2.whenPressed(new ARMED2());
+        ServoDisarmed2.whenPressed(new DISARMED2());
+
 
         drive.setDefaultCommand(stickDrive);
-
+        Lift2.setDefaultCommand(new STOP2());
+        Lift.setDefaultCommand(new STOP());
         funnel.setDefaultCommand(manFunnel);
+       
 
     }
 
@@ -69,7 +113,7 @@ public class RobotContainer {
     * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
     */
     private void configureButtonBindings() {
-
+        
 
     }
 
