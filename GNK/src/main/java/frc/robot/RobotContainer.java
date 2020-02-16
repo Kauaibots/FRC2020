@@ -65,8 +65,8 @@ public class RobotContainer {
 
         drive.setDefaultCommand(stickDrive);
 
-        //funnel.setDefaultCommand(new IndexingFunnel(FunnelState.STOP));
-        funnel.setDefaultCommand(manFunnel);
+        funnel.setDefaultCommand(new IndexingFunnel(FunnelState.STOP));
+        //funnel.setDefaultCommand(manFunnel);
     }
 
     /**
@@ -80,8 +80,8 @@ public class RobotContainer {
         funnelIntake = new JoystickButton(driveStick, 11);
         funnelOuttake = new JoystickButton(driveStick, 12);
 
-        //funnelIntake.whileHeld(new IndexingFunnel(FunnelState.COLLECT));
-        //funnelOuttake.whileHeld(new IndexingFunnel(FunnelState.DUMP));
+        funnelIntake.whileHeld(new IndexingFunnel(FunnelState.COLLECT));
+        funnelOuttake.whileHeld(new IndexingFunnel(FunnelState.DUMP));
         
 
     }
