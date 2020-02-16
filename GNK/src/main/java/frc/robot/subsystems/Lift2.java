@@ -34,7 +34,7 @@ public class Lift2 extends SubsystemBase {
     SensorUp2.get();
     if(SensorUp2.get() == true)
     {
-      Speed3 = .5;
+      Speed3 = -.5;
     }
     else if(SensorUp2.get() == false)
     {
@@ -50,7 +50,7 @@ public class Lift2 extends SubsystemBase {
     SensorDown2.get();
     if(SensorDown2.get() == true)
     {
-      Speed4 = -.5;
+      Speed4 = .5;
     }
     else if(SensorDown2.get() == false)
     {

@@ -83,8 +83,8 @@ public class RobotContainer {
         LiftDown = new JoystickButton(arduino, 12);
         ServoArmed = new JoystickButton(arduino, 7);
         ServoDisarmed = new JoystickButton(arduino, 8);
-        LiftUp2 = new JoystickButton(arduino, 9);
-        LiftDown2 = new JoystickButton(arduino, 11);
+        LiftUp2 = new JoystickButton(arduino, 11);
+        LiftDown2 = new JoystickButton(arduino, 9);
         ServoArmed2 = new JoystickButton(arduino, 5);
         ServoDisarmed2 = new JoystickButton(arduino, 4);
 
