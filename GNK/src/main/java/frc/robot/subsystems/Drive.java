@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import frc.robot.Constants;
 import frc.robot.Robot;
+import frc.robot.RobotPreferences;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
@@ -22,26 +23,43 @@ public class Drive extends SubsystemBase {
 
     public Drive() {
         
+        SmartDashboard.putBoolean("Rotate PID Tune", false);
+        SmartDashboard.putNumber("Rotate P: ", RobotPreferences.getDriveDistP());
+        SmartDashboard.putNumber("Rotate I: ", RobotPreferences.getDriveDistI());
+        SmartDashboard.putNumber("Rotate D: ", RobotPreferences.getDriveDistD());
         
 
     }
 
    
-    
+
 
     @Override
     public void periodic() {
 
         SmartDashboard.putNumber("Encoder Left", getEncoder(EncoderEnum.LEFT));
         SmartDashboard.putNumber("Encoder Right", getEncoder(EncoderEnum.RIGHT));
+        SmartDashboard.putNumber("Encoder Conversion", Constants.leftEncoder.getPositionConversionFactor());
+        SmartDashboard.putNumber("Encoder CPR", Constants.leftEncoder.getCountsPerRevolution());
 
+        SmartDashboard.putNumber("Yaw", getYaw());
 
         if (Robot.robotContainer.driveStick.getRawButton(3)) {
             zeroEncoder(EncoderEnum.MIDDLE);
         }
 
-        SmartDashboard.putNumber("Encoder Conversion", Constants.leftEncoder.getPositionConversionFactor());
-        SmartDashboard.putNumber("Encoder CPR", Constants.leftEncoder.getCountsPerRevolution());
+        if (Robot.robotContainer.driveStick.getRawButton(4)) {
+            zeroYaw();
+        }
+
+
+        if (SmartDashboard.getBoolean("Rotate PID Tune", false)) {
+
+            //updateRotatePID();
+        }
+
+
+
 
 
         Constants.m_odometry.update(Rotation2d.fromDegrees(getYaw()), inchToMeter(getEncoder(EncoderEnum.RAWLEFT)), inchToMeter(getEncoder(EncoderEnum.RAWRIGHT)));
@@ -52,6 +70,26 @@ public class Drive extends SubsystemBase {
 
     public void setDrive(double vY, double vRot) {
         robotDrive.arcadeDrive(vY, vRot);
+    }
+
+    public void setStraightDrive(double vY) {
+
+        double leftEncoder = getEncoder(EncoderEnum.LEFT);
+        double rightEncoder = getEncoder(EncoderEnum.RIGHT);
+
+        double leftPower = vY;
+        double rightPower = vY;
+
+        if (leftEncoder > rightEncoder) {
+            leftPower *= 0.95;
+            rightPower *= 1.0;
+        }
+        else if (rightEncoder > leftEncoder) {
+            leftPower *= 1.0;
+            rightPower *= 0.95;
+        }
+
+        robotDrive.tankDrive(leftPower, rightPower);
     }
 
     public void setTankVoltage(double leftVolts, double rightVolts) {
@@ -87,6 +125,10 @@ public class Drive extends SubsystemBase {
         }
 
         return 0;
+    }
+
+    public double getAverageEncoder() {
+        return getEncoder(EncoderEnum.MIDDLE);
     }
 
     public void zeroEncoder(EncoderEnum encoder) {
@@ -141,6 +183,11 @@ public class Drive extends SubsystemBase {
     }
 
 
+    public void updateRotatePID() {
+        RobotPreferences.setRotateP(SmartDashboard.getNumber("Rotate P: ", 0.0));
+        RobotPreferences.setRotateI(SmartDashboard.getNumber("Rotate I: ", 0.0));
+        RobotPreferences.setRotateD(SmartDashboard.getNumber("Rotate D: ", 0.0));
+    }
 
 }
 

@@ -1,38 +1,74 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpiutil.math.MathUtil;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.PIDCommand;
+import frc.robot.Robot;
+import frc.robot.RobotPreferences;
+import frc.robot.subsystems.Drive;
 
+public class AutoRotate extends PIDCommand {
 
-    public class AutoRotate extends CommandBase  {
-      
-    private final double kP = 0.0;
-    private final double kI = 0.0;
-    private final double kD = 0.0;
-    private double pidOut;
+    private final static Drive drive = Robot.drive;
 
+    double tolerance = .5;
+    double dTolerance = 1;
+
+    public AutoRotate(double degrees) {
+
+        super(new PIDController(RobotPreferences.getRotateP(), RobotPreferences.getRotateI(),
+                RobotPreferences.getRotateD()),
+                // Close loop on heading
+                drive::getYaw,
+                // Set reference to target
+                degrees,
+                // Pipe output to turn robot
+                output -> drive.setDrive(0, output),
+                // Require the drive
+                drive);
+
+        getController().enableContinuousInput(-180, 180);
+
+        getController().setTolerance(tolerance, dTolerance);
+
+        // SendableRegistry.setName(getController(), "Auto Rotate PID");
+
+    }
 
     @Override
     public void initialize() {
-    
-        PIDController pid = new PIDController(kP, kI, kD);
 
-        pidOut = pid.calculate(1, 1);
-       
-        pid.getVelocityError();
+        super.initialize();
 
-        pid.setTolerance(5);
-        pid.atSetpoint();
+        SmartDashboard.putBoolean("Auto Rotate Active", true);
 
-        pid.setIntegratorRange(-0.5, 0.5);
+        drive.updateRotatePID();
 
-        pid.enableContinuousInput(-180, 180);
-
-        MathUtil.clamp(pid.calculate(1, 1), -1, 1);
+        getController().setPID(RobotPreferences.getRotateP(), RobotPreferences.getRotateI(),
+                RobotPreferences.getRotateD());
 
     }
 
-        
+    @Override
+    public void execute() {
+
+        super.execute();
+
+        SmartDashboard.putNumber("Auto Rotate Error", getController().getPositionError());
+        SmartDashboard.putNumber("Auto Rotate Setpoint", getController().getSetpoint());
 
     }
+
+    @Override
+    public boolean isFinished() {
+        return getController().atSetpoint();
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        super.end(interrupted);
+        drive.setDrive(0, 0);
+        SmartDashboard.putBoolean("Auto Rotate Active", false);
+    }
+
+}

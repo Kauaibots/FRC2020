@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.AutoRotate;
 import frc.robot.commands.IndexingFunnel;
 import frc.robot.commands.ManualSliderFunnel;
 import frc.robot.commands.StickDrive;
@@ -66,6 +67,7 @@ public class RobotContainer {
 
     public Joystick driveStick = new Joystick(0);
     public Joystick arduino = new Joystick(1);
+    
     Button LiftUp;
     Button LiftDown;
     Button ServoArmed;
@@ -74,6 +76,11 @@ public class RobotContainer {
     Button LiftDown2;
     Button ServoArmed2;
     Button ServoDisarmed2;
+
+    public JoystickButton rotate0;
+    public JoystickButton rotate90;
+    public JoystickButton rotate180;
+    public JoystickButton rotateNeg90;
 
     public JoystickButton funnelIntake;
     public JoystickButton funnelOuttake;
@@ -91,8 +98,8 @@ public class RobotContainer {
         Lift2.setDefaultCommand(new STOP2());
         Lift.setDefaultCommand(new STOP());
       
-        funnel.setDefaultCommand(new IndexingFunnel(FunnelState.STOP));
-        //funnel.setDefaultCommand(manFunnel);
+        //funnel.setDefaultCommand(new IndexingFunnel(FunnelState.STOP));
+        funnel.setDefaultCommand(manFunnel);
       
         configureButtonBindings();
       
@@ -106,9 +113,16 @@ public class RobotContainer {
     */
     private void configureButtonBindings() {
 
+        //Drive button bindings
+        rotate0 = new JoystickButton(driveStick, 7);
+        rotate90 = new JoystickButton(driveStick, 8);
+        rotate180 = new JoystickButton(driveStick, 10);
+        rotateNeg90 = new JoystickButton(driveStick, 9);
+
+
         //Funnel Button Bindings
-        funnelIntake = new JoystickButton(driveStick, 11);
-        funnelOuttake = new JoystickButton(driveStick, 12);
+        funnelIntake = new JoystickButton(driveStick, 12);
+        funnelOuttake = new JoystickButton(driveStick, 11);
       
         //Lift Button Bindings
         LiftUp = new JoystickButton(arduino, 10);
@@ -120,7 +134,14 @@ public class RobotContainer {
         ServoArmed2 = new JoystickButton(arduino, 5);
         ServoDisarmed2 = new JoystickButton(arduino, 4);
 
+
+        rotate0.whenPressed(new AutoRotate(0).withTimeout(5));
+        rotate90.whenPressed(new AutoRotate(90).withTimeout(5));
+        rotate180.whenPressed(new AutoRotate(180).withTimeout(5));
+        rotateNeg90.whenPressed(new AutoRotate(-90).withTimeout(5));
+
       
+
         //Funnel button actions
         funnelIntake.whileHeld(new IndexingFunnel(FunnelState.COLLECT));
         funnelOuttake.whileHeld(new IndexingFunnel(FunnelState.DUMP));

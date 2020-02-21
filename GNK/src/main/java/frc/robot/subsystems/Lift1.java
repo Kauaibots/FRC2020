@@ -89,7 +89,7 @@ public class Lift1 extends SubsystemBase {
   }
   public void ARMED()
   {
-    Servo1.setPosition(.1);
+    Servo1.setPosition(0);
   }
 
 

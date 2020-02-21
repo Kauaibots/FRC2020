@@ -1,10 +1,15 @@
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
+import com.revrobotics.AlternateEncoderType;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
+import com.revrobotics.CANAnalog.AnalogMode;
+import com.revrobotics.CANSparkMax.IdleMode;
+
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
@@ -25,8 +30,12 @@ public class Constants {
     public static SpeedControllerGroup m_left;
     public static SpeedControllerGroup m_right;
     public static DifferentialDrive robotDrive;
+
+    private static final AlternateEncoderType kAltEncType = AlternateEncoderType.kQuadrature;
+    private static final int kCPR = 1024;
     public static CANEncoder leftEncoder;
     public static CANEncoder rightEncoder;
+
 
 
     public static WPI_TalonSRX roller1;
@@ -40,6 +49,9 @@ public class Constants {
     public static AnalogInput ir3;
     public static AnalogInput ir4;
     public static AnalogInput ir5;
+
+
+    private static final double driveRampRate = .25;
 
 
 
@@ -56,22 +68,34 @@ public class Constants {
 
         spark1 = new CANSparkMax(1, CANSparkMaxLowLevel.MotorType.kBrushless);
         spark1.setInverted(false);
+        spark1.setOpenLoopRampRate(driveRampRate);
+        spark1.setIdleMode(IdleMode.kBrake);
 
         spark2 = new CANSparkMax(2, CANSparkMaxLowLevel.MotorType.kBrushless);
         spark2.setInverted(false);
+        spark2.setOpenLoopRampRate(driveRampRate);
+        spark2.setIdleMode(IdleMode.kBrake);
 
         spark3 = new CANSparkMax(3, CANSparkMaxLowLevel.MotorType.kBrushless);
-       spark3.setInverted(false);
-       
+        spark3.setInverted(false);
+        spark3.setOpenLoopRampRate(driveRampRate);
+        spark3.setIdleMode(IdleMode.kBrake);
+
         spark4 = new CANSparkMax(4, CANSparkMaxLowLevel.MotorType.kBrushless);
         spark4.setInverted(true);
+        spark4.setOpenLoopRampRate(driveRampRate);
+        spark4.setIdleMode(IdleMode.kBrake);
 
         spark5 = new CANSparkMax(5, CANSparkMaxLowLevel.MotorType.kBrushless);
         spark5.setInverted(true);
+        spark5.setOpenLoopRampRate(driveRampRate);
+        spark5.setIdleMode(IdleMode.kBrake);
 
         spark6 = new CANSparkMax(6, CANSparkMaxLowLevel.MotorType.kBrushless);
         spark6.setInverted(true);
-        
+        spark6.setOpenLoopRampRate(driveRampRate);
+        spark6.setIdleMode(IdleMode.kBrake);
+
         m_left = new SpeedControllerGroup(spark1, spark2, spark3);
         
         m_right = new SpeedControllerGroup(spark4, spark5, spark6);
@@ -80,10 +104,11 @@ public class Constants {
         robotDrive.setRightSideInverted(false);
         robotDrive.setSafetyEnabled(false);
     
-        leftEncoder = new CANEncoder(spark1);
+        leftEncoder = spark1.getAlternateEncoder(kAltEncType, kCPR);
         leftEncoder.setPositionConversionFactor(encoderConversionValue);
 
-        rightEncoder = new CANEncoder(spark4);
+
+        rightEncoder = spark4.getAlternateEncoder(kAltEncType, kCPR);
         rightEncoder.setPositionConversionFactor(encoderConversionValue);
 
 
@@ -93,8 +118,14 @@ public class Constants {
         roller4 = new WPI_TalonSRX(4);
         roller5 = new WPI_TalonSRX(5);
 
+        roller1.setNeutralMode(NeutralMode.Brake);
+        roller2.setNeutralMode(NeutralMode.Brake);
+        roller3.setNeutralMode(NeutralMode.Brake);
+        roller4.setNeutralMode(NeutralMode.Brake);
+        roller5.setNeutralMode(NeutralMode.Brake);
+
         roller1.setInverted(true);
-        roller2.setInverted(true);
+        roller2.setInverted(false);
         roller3.setInverted(true);
         roller4.setInverted(true);
         roller5.setInverted(true);

@@ -1,8 +1,10 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.fasterxml.jackson.databind.Module.SetupContext;
 
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -25,11 +27,15 @@ import frc.robot.Constants;
         private final AnalogInput ir5 = Constants.ir5;
 
         //The voltage value for each ir sensor to detect a ball's presence
-        private final double ballVolt1 = 1;
+        private final double ballVolt1 = 1.5;
         private final double ballVolt2 = 2;
         private final double ballVolt3 = 1.4;
         private final double ballVolt4 = 1;
         private final double ballVolt5 = 1.5;
+
+        private Timer timer;
+
+        
 
 
         public Funnel () {
@@ -43,6 +49,15 @@ import frc.robot.Constants;
             SmartDashboard.putNumber("Ball Sensor 3", getIR3());
             SmartDashboard.putNumber("Ball Sensor 4", getIR4());
             SmartDashboard.putNumber("Ball Sensor 5", getIR5());
+
+            SmartDashboard.putNumber("Ball Fill Stage", getBallFill());
+
+            SmartDashboard.putBoolean("Ball Detected 1", getBallPresent(1));
+            SmartDashboard.putBoolean("Ball Detected 2", getBallPresent(2));
+            SmartDashboard.putBoolean("Ball Detected 3", getBallPresent(3));
+            SmartDashboard.putBoolean("Ball Detected 4", getBallPresent(4));
+            SmartDashboard.putBoolean("Ball Detected 5", getBallPresent(5));
+
         }
 
         public void setRoller(int roller, double power) {
@@ -65,11 +80,11 @@ import frc.robot.Constants;
         }
             
         public void setRoller1(double power) {
-            roller1.set(power);
+            roller1.set(power*.65);
         }
 
         public void setRoller2(double power) {
-            roller2.set(power);
+            roller2.set(power*.35);
         }
 
         public void setRoller3(double power) {
@@ -85,7 +100,7 @@ import frc.robot.Constants;
         }
 
         //Turns on all rollers up until the given stage
-        public void setRollers(int stages, double power) {
+        public void setRollerUpTo(int stages, double power) {
             for (int i = 1; i <= stages; i++) {
                 setRoller(i, power);
             }
@@ -93,18 +108,63 @@ import frc.robot.Constants;
 
         public void collectLemons(double power) {
 
-            //If there is no ball anywhere, 4 moves. If there is one in pos 5, 3 moves
-            int stageToMove = (getBallFill() != 0) ? getBallFill()-2:4;
+            int ballFill = getBallFill();
 
-            setRollers(stageToMove, power);
+            int stageToMove = 4;
 
+            setRollerUpTo(5, 0);
+
+            if (ballFill == 5) { //If one ball
+                setRoller(4, power*.5);
+                stageToMove = 3;
+            }
+            else if (ballFill == 4) { //If two balls
+                setRoller(3, power*.55);
+                stageToMove = 2;
+            }
+            else if (ballFill == 3) { //If three balls
+                setRoller(2, power*.275);
+                stageToMove = 1;
+            }
+            else if (ballFill == 2) { //If four balls
+                setRoller(1, power*.4);
+                stageToMove = 0;
+            }
+            else if (ballFill == 1) { //If five balls
+                stageToMove = 0;
+            }
+            else if (ballFill == 0) {
+                stageToMove = 0;
+            }
+            else if (ballFill == 6) { //If empty
+                setRoller(5, power*.2);
+                stageToMove = 4;
+            }
+
+        /*    if (ballFill > 2) {
+                stageToMove =  ballFill-2;
+                setRoller(ballFill-1, power*.5);
+            }
+            else if (ballFill > 0) {
+                stageToMove = ballFill-1;
+                power *= .7;
+            }
+
+            */
+
+            setRollerUpTo(stageToMove, power);
+
+        }
+
+        public void ejectLemons(double power) {
+            
         }
 
         //Returns an int representing the lowest filled stage
         public int getBallFill() {
             for (int i = 5; i > 0; i--) {
-                if (getBallPresent(i)){
-                    return i;
+                if (!getBallPresent(i)){
+                    return i+1;
                 }
             }
             return 0;

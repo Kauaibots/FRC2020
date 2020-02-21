@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
@@ -18,6 +19,7 @@ public class IndexingFunnel extends CommandBase {
 
     double power = 1.0;
 
+    int timer = 0;
 
 
 
@@ -32,6 +34,11 @@ public class IndexingFunnel extends CommandBase {
     }
 
     @Override
+    public void initialize() {
+        timer = 0;
+    }
+
+    @Override
     public void execute() {
 
         switch (state) {
@@ -39,7 +46,7 @@ public class IndexingFunnel extends CommandBase {
                 funnel.stopAllRollers();
                 break;
             case DUMP:
-                funnel.setRoller(5, power);
+                dumpLemons();
                 break;
             case REVERSE1:
                 funnel.setRoller1(-power);
@@ -56,9 +63,24 @@ public class IndexingFunnel extends CommandBase {
                 break;
         }
 
+        timer++;
+
     }
 
 
+
+    private void dumpLemons() {
+
+        funnel.setRoller(3, power);
+        funnel.setRoller(4, power);
+        funnel.setRoller(5, power);
+        if (timer > 15) {
+            funnel.setRoller(2, power);
+        }
+        if (timer > 30) {
+            funnel.setRoller(1, power);
+        }
+    }
 
 
     @Override
