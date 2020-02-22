@@ -67,38 +67,7 @@ public class Constants {
 
         imu = new AHRS(SPI.Port.kMXP);
 
-        m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(imu.getAngle()));
-
-
-        spark1 = new CANSparkMax(1, CANSparkMaxLowLevel.MotorType.kBrushless);
-        spark1.setInverted(false);
-        spark1.setOpenLoopRampRate(driveRampRate);
-        spark1.setIdleMode(IdleMode.kBrake);
-
-        spark2 = new CANSparkMax(2, CANSparkMaxLowLevel.MotorType.kBrushless);
-        spark2.setInverted(false);
-        spark2.setOpenLoopRampRate(driveRampRate);
-        spark2.setIdleMode(IdleMode.kBrake);
-
-        spark3 = new CANSparkMax(3, CANSparkMaxLowLevel.MotorType.kBrushless);
-        spark3.setInverted(false);
-        spark3.setOpenLoopRampRate(driveRampRate);
-        spark3.setIdleMode(IdleMode.kBrake);
-
-        spark4 = new CANSparkMax(4, CANSparkMaxLowLevel.MotorType.kBrushless);
-        spark4.setInverted(true);
-        spark4.setOpenLoopRampRate(driveRampRate);
-        spark4.setIdleMode(IdleMode.kBrake);
-
-        spark5 = new CANSparkMax(5, CANSparkMaxLowLevel.MotorType.kBrushless);
-        spark5.setInverted(true);
-        spark5.setOpenLoopRampRate(driveRampRate);
-        spark5.setIdleMode(IdleMode.kBrake);
-
-        spark6 = new CANSparkMax(6, CANSparkMaxLowLevel.MotorType.kBrushless);
-        spark6.setInverted(true);
-        spark6.setOpenLoopRampRate(driveRampRate);
-        spark6.setIdleMode(IdleMode.kBrake);
+        driveInit();
 
         m_left = new SpeedControllerGroup(spark1, spark2, spark3);
         
@@ -149,6 +118,11 @@ public class Constants {
         ir3 = new AnalogInput(2);
         ir4 = new AnalogInput(3);
         ir5 = new AnalogInput(6);
+
+    }
+
+
+    void driveInit() {
 
     }
 
