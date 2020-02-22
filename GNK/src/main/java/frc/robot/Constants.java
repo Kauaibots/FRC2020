@@ -69,6 +69,51 @@ public class Constants {
 
         driveInit();
 
+        funnelInit();
+
+        cpArmInit();
+
+
+
+
+    }
+
+    static void driveInit() {
+
+        m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(imu.getAngle()));
+
+
+        spark1 = new CANSparkMax(1, CANSparkMaxLowLevel.MotorType.kBrushless);
+        spark1.setInverted(false);
+        spark1.setOpenLoopRampRate(driveRampRate);
+        spark1.setIdleMode(IdleMode.kBrake);
+
+        spark2 = new CANSparkMax(2, CANSparkMaxLowLevel.MotorType.kBrushless);
+        spark2.setInverted(false);
+        spark2.setOpenLoopRampRate(driveRampRate);
+        spark2.setIdleMode(IdleMode.kBrake);
+
+        spark3 = new CANSparkMax(3, CANSparkMaxLowLevel.MotorType.kBrushless);
+        spark3.setInverted(false);
+        spark3.setOpenLoopRampRate(driveRampRate);
+        spark3.setIdleMode(IdleMode.kBrake);
+
+        spark4 = new CANSparkMax(4, CANSparkMaxLowLevel.MotorType.kBrushless);
+        spark4.setInverted(true);
+        spark4.setOpenLoopRampRate(driveRampRate);
+        spark4.setIdleMode(IdleMode.kBrake);
+
+        spark5 = new CANSparkMax(5, CANSparkMaxLowLevel.MotorType.kBrushless);
+        spark5.setInverted(true);
+        spark5.setOpenLoopRampRate(driveRampRate);
+        spark5.setIdleMode(IdleMode.kBrake);
+
+        spark6 = new CANSparkMax(6, CANSparkMaxLowLevel.MotorType.kBrushless);
+        spark6.setInverted(true);
+        spark6.setOpenLoopRampRate(driveRampRate);
+        spark6.setIdleMode(IdleMode.kBrake);
+
+
         m_left = new SpeedControllerGroup(spark1, spark2, spark3);
         
         m_right = new SpeedControllerGroup(spark4, spark5, spark6);
@@ -85,6 +130,10 @@ public class Constants {
         rightEncoder.setPositionConversionFactor(encoderConversionValue);
 
 
+    }
+
+    static void funnelInit(){
+
         roller1 = new WPI_TalonSRX(1);
         roller2 = new WPI_TalonSRX(2);
         roller3 = new WPI_TalonSRX(3);
@@ -92,7 +141,6 @@ public class Constants {
         roller5 = new WPI_TalonSRX(5);
 
         intakeMotor = new WPI_TalonSRX(6);
-        cpArm = new WPI_TalonSRX(7);
 
         roller1.setNeutralMode(NeutralMode.Brake);
         roller2.setNeutralMode(NeutralMode.Brake);
@@ -101,9 +149,6 @@ public class Constants {
         roller5.setNeutralMode(NeutralMode.Brake);
 
         intakeMotor.setNeutralMode(NeutralMode.Brake);
-        cpArm.setNeutralMode(NeutralMode.Brake);
-        cpArm.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
-        cpArm.setSensorPhase(true);
 
         roller1.setInverted(true);
         roller2.setInverted(false);
@@ -121,8 +166,13 @@ public class Constants {
 
     }
 
+    static void cpArmInit() {
+        
+        cpArm = new WPI_TalonSRX(7);
 
-    void driveInit() {
+        cpArm.setNeutralMode(NeutralMode.Brake);
+        cpArm.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
+        cpArm.setSensorPhase(true);
 
     }
 
