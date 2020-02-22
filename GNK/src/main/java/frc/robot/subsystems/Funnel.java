@@ -1,10 +1,8 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.fasterxml.jackson.databind.Module.SetupContext;
 
 import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -12,13 +10,13 @@ import frc.robot.Constants;
     public class Funnel extends SubsystemBase {
 
         public enum FunnelState { COLLECT, DUMP, STOP, REVERSE1, REVERSEALL };
-        public enum EmptyStage { ZERO, ONE, TWO, THREE, FOUR, FIVE }
 
         private final WPI_TalonSRX roller1 = Constants.roller1;
         private final WPI_TalonSRX roller2 = Constants.roller2;
         private final WPI_TalonSRX roller3 = Constants.roller3;
         private final WPI_TalonSRX roller4 = Constants.roller4;
         private final WPI_TalonSRX roller5 = Constants.roller5;
+        private final WPI_TalonSRX intakeMotor = Constants.intakeMotor;
 
         private final AnalogInput ir1 = Constants.ir1;
         private final AnalogInput ir2 = Constants.ir2;
@@ -32,8 +30,6 @@ import frc.robot.Constants;
         private final double ballVolt3 = 1.4;
         private final double ballVolt4 = 1;
         private final double ballVolt5 = 1.5;
-
-        private Timer timer;
 
         
 
@@ -81,6 +77,12 @@ import frc.robot.Constants;
             
         public void setRoller1(double power) {
             roller1.set(power*.65);
+            if (power > 0) {
+                setIntake(.7);
+            }
+            else {
+                setIntake(0);
+            }
         }
 
         public void setRoller2(double power) {
@@ -97,6 +99,10 @@ import frc.robot.Constants;
 
         public void setRoller5(double power) {
             roller5.set(power);
+        }
+
+        public void setIntake(double power) {
+            intakeMotor.set(power);
         }
 
         //Turns on all rollers up until the given stage

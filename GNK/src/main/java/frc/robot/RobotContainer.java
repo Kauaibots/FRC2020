@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.ArmGoToPosition;
 import frc.robot.commands.AutoRotate;
 import frc.robot.commands.IndexingFunnel;
 import frc.robot.commands.ManualSliderFunnel;
@@ -43,6 +44,7 @@ import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Funnel;
 import frc.robot.subsystems.Lift1;
 import frc.robot.subsystems.Lift2;
+import frc.robot.subsystems.ControlPanel.ControlPosition;
 import frc.robot.subsystems.Funnel.FunnelState;
 
 
@@ -85,6 +87,9 @@ public class RobotContainer {
     public JoystickButton funnelIntake;
     public JoystickButton funnelOuttake;
 
+    public JoystickButton cpUp;
+    public JoystickButton cpDown;
+
     
 
 
@@ -123,6 +128,10 @@ public class RobotContainer {
         //Funnel Button Bindings
         funnelIntake = new JoystickButton(driveStick, 12);
         funnelOuttake = new JoystickButton(driveStick, 11);
+
+        //Control Panel Button Bindings
+        cpUp = new JoystickButton(driveStick, 5);
+        cpDown = new JoystickButton(driveStick, 2);
       
         //Lift Button Bindings
         LiftUp = new JoystickButton(arduino, 10);
@@ -145,6 +154,11 @@ public class RobotContainer {
         //Funnel button actions
         funnelIntake.whileHeld(new IndexingFunnel(FunnelState.COLLECT));
         funnelOuttake.whileHeld(new IndexingFunnel(FunnelState.DUMP));
+
+
+        //Control Panel button actions
+        cpUp.whenPressed(new ArmGoToPosition(ControlPosition.UP));
+        cpDown.whenPressed(new ArmGoToPosition(ControlPosition.DOWN));
       
       
         //Lift button actions

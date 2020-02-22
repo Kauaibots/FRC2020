@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
@@ -46,14 +47,25 @@ public class DriveDistance extends ProfiledPIDCommand  {
 
         @Override
         public void initialize() {
+            super.initialize();
+
+
+            SmartDashboard.putBoolean("Drive Distance Active", true);
+
+            drive.updateDriveDistPID();
+    
+            getController().setPID(RobotPreferences.getDriveDistP(), RobotPreferences.getDriveDistI(),
+                    RobotPreferences.getDriveDistD());
 
 
         }
 
         @Override
         public void execute() {
-            
+            super.execute();
 
+            SmartDashboard.putNumber("Drive Distance Error", getController().getPositionError());
+            SmartDashboard.getNumber("Drive Distance Setpoint", getController().getSetpoint().position);
 
         }
 
@@ -64,7 +76,10 @@ public class DriveDistance extends ProfiledPIDCommand  {
 
         @Override
         public void end(boolean interrupted) {
+            super.end(interrupted);
             drive.setDrive(0, 0);
+            SmartDashboard.putBoolean("Drive Distance Active", false);
+
         }
 
 

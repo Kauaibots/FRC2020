@@ -1,12 +1,9 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
-import frc.robot.RobotContainer;
 import frc.robot.subsystems.*;
-import frc.robot.subsystems.Funnel.EmptyStage;
 import frc.robot.subsystems.Funnel.FunnelState;
 
 public class IndexingFunnel extends CommandBase {
@@ -14,8 +11,6 @@ public class IndexingFunnel extends CommandBase {
     private final Funnel funnel = Robot.funnel;
 
     FunnelState state;
-
-    EmptyStage empty;
 
     double power = 1.0;
 

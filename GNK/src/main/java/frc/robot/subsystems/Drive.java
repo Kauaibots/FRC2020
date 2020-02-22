@@ -24,10 +24,14 @@ public class Drive extends SubsystemBase {
     public Drive() {
         
         SmartDashboard.putBoolean("Rotate PID Tune", false);
-        SmartDashboard.putNumber("Rotate P: ", RobotPreferences.getDriveDistP());
-        SmartDashboard.putNumber("Rotate I: ", RobotPreferences.getDriveDistI());
-        SmartDashboard.putNumber("Rotate D: ", RobotPreferences.getDriveDistD());
+        SmartDashboard.putNumber("Rotate P: ", RobotPreferences.getRotateP());
+        SmartDashboard.putNumber("Rotate I: ", RobotPreferences.getRotateI());
+        SmartDashboard.putNumber("Rotate D: ", RobotPreferences.getRotateD());
         
+        SmartDashboard.putBoolean("DriveDist PID Tune", false);
+        SmartDashboard.putNumber("DriveDist P: ", RobotPreferences.getDriveDistP());
+        SmartDashboard.putNumber("DriveDist I: ", RobotPreferences.getDriveDistI());
+        SmartDashboard.putNumber("DriveDist D: ", RobotPreferences.getDriveDistD());
 
     }
 
@@ -187,6 +191,12 @@ public class Drive extends SubsystemBase {
         RobotPreferences.setRotateP(SmartDashboard.getNumber("Rotate P: ", 0.0));
         RobotPreferences.setRotateI(SmartDashboard.getNumber("Rotate I: ", 0.0));
         RobotPreferences.setRotateD(SmartDashboard.getNumber("Rotate D: ", 0.0));
+    }
+
+    public void updateDriveDistPID() {
+        RobotPreferences.setDriveDistP(SmartDashboard.getNumber("DriveDist P: ", 0.0));
+        RobotPreferences.setDriveDistI(SmartDashboard.getNumber("DriveDist I: ", 0.0));
+        RobotPreferences.setDriveDistD(SmartDashboard.getNumber("DriveDist D: ", 0.0));
     }
 
 }

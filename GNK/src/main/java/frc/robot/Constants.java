@@ -1,5 +1,6 @@
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
@@ -43,6 +44,9 @@ public class Constants {
     public static WPI_TalonSRX roller3;
     public static WPI_TalonSRX roller4;
     public static WPI_TalonSRX roller5;
+
+    public static WPI_TalonSRX intakeMotor;
+    public static WPI_TalonSRX cpArm;
 
     public static AnalogInput ir1;
     public static AnalogInput ir2;
@@ -118,17 +122,27 @@ public class Constants {
         roller4 = new WPI_TalonSRX(4);
         roller5 = new WPI_TalonSRX(5);
 
+        intakeMotor = new WPI_TalonSRX(6);
+        cpArm = new WPI_TalonSRX(7);
+
         roller1.setNeutralMode(NeutralMode.Brake);
         roller2.setNeutralMode(NeutralMode.Brake);
         roller3.setNeutralMode(NeutralMode.Brake);
         roller4.setNeutralMode(NeutralMode.Brake);
         roller5.setNeutralMode(NeutralMode.Brake);
 
+        intakeMotor.setNeutralMode(NeutralMode.Brake);
+        cpArm.setNeutralMode(NeutralMode.Brake);
+        cpArm.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
+        cpArm.setSensorPhase(true);
+
         roller1.setInverted(true);
         roller2.setInverted(false);
         roller3.setInverted(true);
         roller4.setInverted(true);
         roller5.setInverted(true);
+
+        intakeMotor.setInverted(true);
 
         ir1 = new AnalogInput(0);
         ir2 = new AnalogInput(1);
