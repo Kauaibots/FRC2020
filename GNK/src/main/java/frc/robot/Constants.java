@@ -16,7 +16,10 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.PWMVictorSPX;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.Servo;
 
 public class Constants {
 
@@ -28,6 +31,14 @@ public class Constants {
     public static CANSparkMax spark4;
     public static CANSparkMax spark5;
     public static CANSparkMax spark6;
+    public static CANSparkMax Lift1;
+    public static CANSparkMax Lift2;
+    public static Servo Lift1Servo;
+    public static Servo Lift2Servo;
+    public static DigitalInput Lift1Up;
+    public static DigitalInput Lift1Down;
+    public static DigitalInput Lift2Up;
+    public static DigitalInput Lift2Down;
     public static SpeedControllerGroup m_left;
     public static SpeedControllerGroup m_right;
     public static DifferentialDrive robotDrive;
@@ -73,7 +84,7 @@ public class Constants {
 
         cpArmInit();
 
-
+        liftInit();
 
 
     }
@@ -174,6 +185,23 @@ public class Constants {
         cpArm.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
         cpArm.setSensorPhase(true);
 
+    }
+    static void liftInit(){
+        Lift1 = new CANSparkMax(7, CANSparkMaxLowLevel.MotorType.kBrushless);
+        Lift1.setInverted(false);
+
+        Lift2 = new CANSparkMax(8, CANSparkMaxLowLevel.MotorType.kBrushless);
+        Lift2.setInverted(true);
+
+        Lift1Servo = new Servo(1);
+        Lift2Servo = new Servo(3);
+
+        Lift1Up = new DigitalInput(0);
+        Lift1Down = new DigitalInput(1);
+        Lift2Up = new DigitalInput(2);
+        Lift2Down = new DigitalInput(3);
+      
+        
     }
 
 }

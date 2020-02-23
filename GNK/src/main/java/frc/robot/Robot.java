@@ -21,8 +21,8 @@ public class Robot extends TimedRobot {
 	public static Drive drive;
     public static Funnel funnel;
     public static ControlPanel cPanel;
-    public static Lift1 Lift;
-    public static Lift2 Lift2;
+    public static Lift Lift;
+    
 
     public static RobotPreferences preferences;
 
@@ -43,8 +43,8 @@ public class Robot extends TimedRobot {
         drive = new Drive();
         funnel = new Funnel();
         cPanel = new ControlPanel();
-        Lift = new Lift1();
-        Lift2 = new Lift2();
+        Lift = new Lift();
+        
 
         preferences = new RobotPreferences();
 
@@ -112,8 +112,7 @@ public class Robot extends TimedRobot {
         // continue until interrupted by another command, remove
         // this line or comment it out.
         if (autonomousCommand != null) autonomousCommand.cancel();
-        Robot.Lift.DISARMED();
-        Robot.Lift2.ARMED2();
+        //Lift.setServoUnlocked();
 
    }
 
