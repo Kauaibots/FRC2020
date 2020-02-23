@@ -11,8 +11,8 @@ public class AutoRotate extends PIDCommand {
 
     private final static Drive drive = Robot.drive;
 
-    double tolerance = .5;
-    double dTolerance = 1;
+    double tolerance = 6;
+    double dTolerance = 20;
 
     public AutoRotate(double degrees) {
 

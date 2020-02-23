@@ -70,7 +70,7 @@ public class Constants {
 
 
 
-    private final static double encoderConversionValue = 1/(4.5/12);  //inverse of ticks per inch
+    private final static double encoderConversionValue = 1/(.51/10);  //inverse of ticks per inch
    
 
     public static void init() {

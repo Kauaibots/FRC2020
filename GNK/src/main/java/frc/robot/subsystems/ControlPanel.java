@@ -25,9 +25,10 @@ import frc.robot.RobotContainer;
         public void periodic() {
             
             SmartDashboard.putNumber("Arm Encoder", getEncoder());
+            
 
             if (Robot.robotContainer.driveStick.getRawButton(6)) {
-                zeroEncoder();
+                //zeroEncoder();
             }
 
         }

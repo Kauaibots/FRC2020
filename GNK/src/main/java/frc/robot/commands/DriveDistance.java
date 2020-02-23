@@ -10,6 +10,7 @@ import edu.wpi.first.wpiutil.math.MathUtil;
 import frc.robot.Robot;
 import frc.robot.RobotPreferences;
 import frc.robot.subsystems.Drive;
+import frc.robot.subsystems.Drive.EncoderEnum;
 
 
 public class DriveDistance extends ProfiledPIDCommand  {
@@ -18,7 +19,7 @@ public class DriveDistance extends ProfiledPIDCommand  {
     private final static Drive drive = Robot.drive;
 
     private final double tolerance = .75;
-    private final double dTolerance = .5;
+    private final double dTolerance = 1/12;
 
     
     public DriveDistance(double inches) {
@@ -26,8 +27,8 @@ public class DriveDistance extends ProfiledPIDCommand  {
         super(
             new ProfiledPIDController(RobotPreferences.getDriveDistP(), RobotPreferences.getDriveDistI(),
                                       RobotPreferences.getDriveDistD(), new TrapezoidProfile.Constraints(
-                12, //Max Feet per second
-                3)), //Max Feet per second per second
+                                        10/12, //Inches per second
+                                        1/12)), //Inches per second per second
             // Close loop on heading
             drive::getAverageEncoder,
             // Set reference to target
@@ -42,13 +43,13 @@ public class DriveDistance extends ProfiledPIDCommand  {
         getController().setTolerance(tolerance, dTolerance);
 
 
-
     }
 
         @Override
         public void initialize() {
             super.initialize();
 
+            drive.zeroEncoder(EncoderEnum.MIDDLE);
 
             SmartDashboard.putBoolean("Drive Distance Active", true);
 
@@ -65,7 +66,8 @@ public class DriveDistance extends ProfiledPIDCommand  {
             super.execute();
 
             SmartDashboard.putNumber("Drive Distance Error", getController().getPositionError());
-            SmartDashboard.getNumber("Drive Distance Setpoint", getController().getSetpoint().position);
+            SmartDashboard.putNumber("Drive Distance Setpoint", getController().getSetpoint().position);
+            SmartDashboard.putNumber("Drive Distance Current", drive.getAverageEncoder());
 
         }
 

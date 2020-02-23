@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Funnel;
+import frc.robot.subsystems.Lift;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -22,7 +23,6 @@ public class Robot extends TimedRobot {
     public static Funnel funnel;
     public static ControlPanel cPanel;
     public static Lift Lift;
-    
 
     public static RobotPreferences preferences;
 

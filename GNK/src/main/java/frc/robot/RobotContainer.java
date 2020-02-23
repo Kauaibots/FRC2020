@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.ArmGoToPosition;
 import frc.robot.commands.AutoRotate;
+import frc.robot.commands.DriveDistance;
 import frc.robot.commands.IndexingFunnel;
 import frc.robot.commands.LiftManual;
 import frc.robot.commands.ManualSliderFunnel;
@@ -66,10 +67,14 @@ public class RobotContainer {
     Button LiftUp2;
     Button LiftDown2;
 
-    public JoystickButton rotate0;
-    public JoystickButton rotate90;
-    public JoystickButton rotate180;
-    public JoystickButton rotateNeg90;
+    //public JoystickButton rotate0;
+    //public JoystickButton rotate90;
+    //public JoystickButton rotate180;
+    //public JoystickButton rotateNeg90;
+
+    public JoystickButton drive10;
+    public JoystickButton driveNeg10;
+    public JoystickButton drive20;
 
     public JoystickButton funnelIntake;
     public JoystickButton funnelOuttake;
@@ -107,10 +112,14 @@ public class RobotContainer {
     private void configureButtonBindings() {
 
         //Drive button bindings
-        rotate0 = new JoystickButton(driveStick, 7);
-        rotate90 = new JoystickButton(driveStick, 8);
-        rotate180 = new JoystickButton(driveStick, 10);
-        rotateNeg90 = new JoystickButton(driveStick, 9);
+        //rotate0 = new JoystickButton(driveStick, 7);
+        //rotate90 = new JoystickButton(driveStick, 8);
+        //rotate180 = new JoystickButton(driveStick, 10);
+        //rotateNeg90 = new JoystickButton(driveStick, 9);
+
+        drive10 = new JoystickButton(driveStick, 9);
+        drive20 = new JoystickButton(driveStick, 7);
+        driveNeg10 = new JoystickButton(driveStick, 10);
 
 
         //Funnel Button Bindings
@@ -129,10 +138,15 @@ public class RobotContainer {
         
 
 
-        rotate0.whenPressed(new AutoRotate(0).withTimeout(5));
-        rotate90.whenPressed(new AutoRotate(90).withTimeout(5));
-        rotate180.whenPressed(new AutoRotate(180).withTimeout(5));
-        rotateNeg90.whenPressed(new AutoRotate(-90).withTimeout(5));
+        //rotate0.whenPressed(new AutoRotate(0).withTimeout(5));
+        //rotate90.whenPressed(new AutoRotate(90).withTimeout(5));
+        //rotate180.whenPressed(new AutoRotate(180).withTimeout(5));
+        //rotateNeg90.whenPressed(new AutoRotate(-90).withTimeout(5));
+
+        drive10.whenPressed(new DriveDistance(20).withTimeout(5));
+        drive20.whenPressed(new DriveDistance(40).withTimeout(5));
+        driveNeg10.whenPressed(new DriveDistance(-20).withTimeout(5));
+
 
       
 
@@ -143,7 +157,7 @@ public class RobotContainer {
 
         //Control Panel button actions
         cpUp.whenPressed(new ArmGoToPosition(ControlPosition.UP));
-        cpDown.whenPressed(new ArmGoToPosition(ControlPosition.DOWN));
+        //cpDown.whenPressed(new ArmGoToPosition(ControlPosition.DOWN));
       
       
         //Lift button actions

@@ -59,7 +59,7 @@ public class Drive extends SubsystemBase {
 
         if (SmartDashboard.getBoolean("Rotate PID Tune", false)) {
 
-            //updateRotatePID();
+            updateRotatePID();
         }
 
 
@@ -74,6 +74,8 @@ public class Drive extends SubsystemBase {
 
     public void setDrive(double vY, double vRot) {
         robotDrive.arcadeDrive(vY, vRot);
+
+        //setStraightDrive(vY);
     }
 
     public void setStraightDrive(double vY) {
@@ -85,12 +87,12 @@ public class Drive extends SubsystemBase {
         double rightPower = vY;
 
         if (leftEncoder > rightEncoder) {
-            leftPower *= 0.95;
+            leftPower *= 0.9;
             rightPower *= 1.0;
         }
         else if (rightEncoder > leftEncoder) {
             leftPower *= 1.0;
-            rightPower *= 0.95;
+            rightPower *= 0.9;
         }
 
         robotDrive.tankDrive(leftPower, rightPower);
@@ -115,13 +117,13 @@ public class Drive extends SubsystemBase {
     public double getEncoder(EncoderEnum encoder) {
         switch (encoder) {
         case LEFT:
-            return Constants.leftEncoder.getPosition()-leftEncoderOffset;
+            return -Constants.leftEncoder.getPosition()-leftEncoderOffset;
         case RIGHT:
             return Constants.rightEncoder.getPosition()-rightEncoderOffset;
         case MIDDLE:
-            return (getEncoder(EncoderEnum.LEFT)-getEncoder(EncoderEnum.RIGHT))/2;
+            return (getEncoder(EncoderEnum.LEFT)+getEncoder(EncoderEnum.RIGHT))/2;
         case RAWLEFT:
-            return Constants.leftEncoder.getPosition();
+            return -Constants.leftEncoder.getPosition();
         case RAWRIGHT:
             return Constants.rightEncoder.getPosition();
         case RAWMIDDLE:
@@ -142,6 +144,7 @@ public class Drive extends SubsystemBase {
                 break;
             case RIGHT:
                 rightEncoderOffset = getEncoder(EncoderEnum.RAWRIGHT);
+                break;
             case MIDDLE:
                 zeroEncoder(EncoderEnum.LEFT);
                 zeroEncoder(EncoderEnum.RIGHT);

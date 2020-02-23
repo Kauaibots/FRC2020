@@ -28,7 +28,7 @@ import frc.robot.Constants;
         private final double ballVolt1 = 1.5;
         private final double ballVolt2 = 2;
         private final double ballVolt3 = 1.4;
-        private final double ballVolt4 = 1;
+        private final double ballVolt4 = 1.4;
         private final double ballVolt5 = 1.5;
 
         
