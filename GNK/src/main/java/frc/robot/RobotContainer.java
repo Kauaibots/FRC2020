@@ -66,6 +66,8 @@ public class RobotContainer {
     Button LiftDown;
     Button LiftUp2;
     Button LiftDown2;
+    Button LiftUpAll;
+    Button LiftDownAll;
 
     //public JoystickButton rotate0;
     //public JoystickButton rotate90;
@@ -135,6 +137,8 @@ public class RobotContainer {
         LiftDown = new JoystickButton(arduino, 12);
         LiftUp2 = new JoystickButton(arduino, 11);
         LiftDown2 = new JoystickButton(arduino, 9);
+        LiftUpAll = new JoystickButton(arduino, 7);
+        LiftDownAll = new JoystickButton(arduino, 8);
         
 
 
@@ -165,6 +169,8 @@ public class RobotContainer {
         LiftDown.whileHeld(new LiftManual(LiftMotion.DOWN1));
         LiftUp2.whileHeld(new LiftManual(LiftMotion.UP2));
         LiftDown2.whileHeld(new LiftManual(LiftMotion.DOWN2));
+        LiftUpAll.whileHeld(new LiftManual(LiftMotion.UP));
+        LiftDownAll.whileHeld(new LiftManual(LiftMotion.DOWN));
         
         
        
