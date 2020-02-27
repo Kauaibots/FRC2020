@@ -27,10 +27,8 @@ import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.ArmGoToPosition;
 import frc.robot.commands.AutoRotate;
-import frc.robot.commands.CPRollerRotate;
 import frc.robot.commands.DriveDistance;
 import frc.robot.commands.IndexingFunnel;
-import frc.robot.commands.LevelingLift;
 import frc.robot.commands.LiftManual;
 import frc.robot.commands.ManualSliderFunnel;
 import frc.robot.commands.StickDrive;
@@ -63,18 +61,28 @@ public class RobotContainer {
 
     public Joystick driveStick = new Joystick(0);
     public Joystick arduino = new Joystick(1);
+    
+    Button LiftUp;
+    Button LiftDown;
+    Button LiftUp2;
+    Button LiftDown2;
+    Button LiftUpAll;
+    Button LiftDownAll;
 
+    //public JoystickButton rotate0;
+    //public JoystickButton rotate90;
+    //public JoystickButton rotate180;
+    //public JoystickButton rotateNeg90;
 
-    public JoystickButton funnelIndex;
-    public JoystickButton funnelDump;
-    public JoystickButton funnelReverse1;
-    public JoystickButton funnelReverseAll;
+    public JoystickButton drive10;
+    public JoystickButton driveNeg10;
+    public JoystickButton drive20;
 
-    public JoystickButton cpRotate;
-    public JoystickButton cpColor;
+    public JoystickButton funnelIntake;
+    public JoystickButton funnelOuttake;
 
-    public JoystickButton liftUp;
-    public JoystickButton liftDown;
+    public JoystickButton cpUp;
+    public JoystickButton cpDown;
 
     
 
@@ -106,43 +114,62 @@ public class RobotContainer {
     private void configureButtonBindings() {
 
         //Drive button bindings
+        //rotate0 = new JoystickButton(driveStick, 7);
+        //rotate90 = new JoystickButton(driveStick, 8);
+        //rotate180 = new JoystickButton(driveStick, 10);
+        //rotateNeg90 = new JoystickButton(driveStick, 9);
 
-
-
+        drive10 = new JoystickButton(driveStick, 9);
+        drive20 = new JoystickButton(driveStick, 7);
+        driveNeg10 = new JoystickButton(driveStick, 10);
 
 
         //Funnel Button Bindings
-        funnelIndex = new JoystickButton(driveStick, 12);
-        funnelDump = new JoystickButton(driveStick, 11);
-        funnelReverse1 = new JoystickButton(driveStick, 10);
-        funnelReverseAll = new JoystickButton(driveStick, 9);
+        funnelIntake = new JoystickButton(driveStick, 12);
+        funnelOuttake = new JoystickButton(driveStick, 11);
 
         //Control Panel Button Bindings
-        cpRotate = new JoystickButton(driveStick, 3);
-        cpColor = new JoystickButton(driveStick, 4);
+        cpUp = new JoystickButton(driveStick, 5);
+        cpDown = new JoystickButton(driveStick, 2);
       
         //Lift Button Bindings
-        liftUp = new JoystickButton(driveStick, 8);
-        liftDown = new JoystickButton(driveStick, 7);
+        LiftUp = new JoystickButton(arduino, 3);
+        LiftDown = new JoystickButton(arduino, 4);
+        LiftUp2 = new JoystickButton(arduino, 7);
+        LiftDown2 = new JoystickButton(arduino, 6);
+        LiftUpAll = new JoystickButton(arduino, 8);
+        LiftDownAll = new JoystickButton(arduino, 9);
         
+
+
+        //rotate0.whenPressed(new AutoRotate(0).withTimeout(5));
+        //rotate90.whenPressed(new AutoRotate(90).withTimeout(5));
+        //rotate180.whenPressed(new AutoRotate(180).withTimeout(5));
+        //rotateNeg90.whenPressed(new AutoRotate(-90).withTimeout(5));
+
+        drive10.whenPressed(new DriveDistance(20).withTimeout(5));
+        drive20.whenPressed(new DriveDistance(40).withTimeout(5));
+        driveNeg10.whenPressed(new DriveDistance(-20).withTimeout(5));
 
 
       
 
         //Funnel button actions
-        funnelIndex.whileHeld(new IndexingFunnel(FunnelState.COLLECT));
-        funnelDump.whileHeld(new IndexingFunnel(FunnelState.DUMP));
-        funnelReverse1.whileHeld(new IndexingFunnel(FunnelState.REVERSE1));
-        funnelReverseAll.whileHeld(new IndexingFunnel(FunnelState.REVERSEALL));
-
+        funnelIntake.whileHeld(new IndexingFunnel(FunnelState.COLLECT));
+        funnelOuttake.whileHeld(new IndexingFunnel(FunnelState.DUMP));
 
         //Control Panel button actions
-        cpRotate.whenPressed(new CPRollerRotate());
-        cpColor.whenPressed(new ArmGoToPosition(ControlPosition.DOWN));
+        cpUp.whenPressed(new ArmGoToPosition(ControlPosition.UP));
+        //cpDown.whenPressed(new ArmGoToPosition(ControlPosition.DOWN));
       
       
         //Lift button actions
-
+        LiftUp.whileHeld(new LiftManual(LiftMotion.UP1));
+        LiftDown.whileHeld(new LiftManual(LiftMotion.DOWN1));
+        LiftUp2.whileHeld(new LiftManual(LiftMotion.UP2));
+        LiftDown2.whileHeld(new LiftManual(LiftMotion.DOWN2));
+        LiftUpAll.whileHeld(new LiftManual(LiftMotion.UP));
+        LiftDownAll.whileHeld(new LiftManual(LiftMotion.DOWN));
         
         
        
