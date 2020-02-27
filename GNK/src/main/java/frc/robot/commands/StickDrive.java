@@ -67,8 +67,8 @@ public class StickDrive extends CommandBase {
 			new JoystickResponseCurve(.00, 0, 0, DEADZONE), new JoystickResponseCurve(.00, 3, 1.0, DEADZONE));
 
 	JoystickResponseCurveSet conservative = new JoystickResponseCurveSet(
-			new JoystickResponseCurve(.40, 3, .60, DEADZONE), new JoystickResponseCurve(0, 0, 0, DEADZONE),
-			new JoystickResponseCurve(.40, 3, .60, DEADZONE));
+			new JoystickResponseCurve(.40, 3, .80, DEADZONE), new JoystickResponseCurve(0, 0, 0, DEADZONE),
+			new JoystickResponseCurve(.40, 3, .80, DEADZONE));
 
 	JoystickResponseCurveSet aggressive = new JoystickResponseCurveSet(new JoystickResponseCurve(.40, 3, 1.0, DEADZONE),
 			new JoystickResponseCurve(0, 0, 0, DEADZONE), new JoystickResponseCurve(.40, 3, 1.0, DEADZONE));
