@@ -8,16 +8,18 @@ import com.revrobotics.AlternateEncoderType;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
-import com.revrobotics.CANAnalog.AnalogMode;
+import com.revrobotics.ColorMatch;
+import com.revrobotics.ColorSensorV3;
 import com.revrobotics.CANSparkMax.IdleMode;
+import edu.wpi.first.wpilibj.I2C;
 
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.PWMVictorSPX;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Servo;
 
@@ -59,22 +61,25 @@ public class Constants {
     public static WPI_TalonSRX intakeMotor;
     public static WPI_TalonSRX cpArm;
 
+    public static ColorSensorV3 colorSensor;
+    public static ColorMatch colorMatcher;
+
+    public final static Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429);
+    public final static Color kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240);
+    public final static Color kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114);
+    public final static Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
+
     public static AnalogInput ir1;
     public static AnalogInput ir2;
     public static AnalogInput ir3;
     public static AnalogInput ir4;
     public static AnalogInput ir5;
 
-
     private static final double driveRampRate = .25;
 
-
-
-    private final static double encoderConversionValue = 1/(.51/10);  //inverse of ticks per inch
-   
+    private final static double encoderConversionValue = 1 / (.51 / 10); // inverse of ticks per inch
 
     public static void init() {
-
 
         imu = new AHRS(SPI.Port.kMXP);
 
@@ -86,13 +91,11 @@ public class Constants {
 
         liftInit();
 
-
     }
 
     static void driveInit() {
 
         m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(imu.getAngle()));
-
 
         spark1 = new CANSparkMax(1, CANSparkMaxLowLevel.MotorType.kBrushless);
         spark1.setInverted(false);
@@ -124,26 +127,23 @@ public class Constants {
         spark6.setOpenLoopRampRate(driveRampRate);
         spark6.setIdleMode(IdleMode.kBrake);
 
-
         m_left = new SpeedControllerGroup(spark1, spark2, spark3);
-        
+
         m_right = new SpeedControllerGroup(spark4, spark5, spark6);
 
         robotDrive = new DifferentialDrive(m_left, m_right);
         robotDrive.setRightSideInverted(false);
         robotDrive.setSafetyEnabled(false);
-    
+
         leftEncoder = spark1.getAlternateEncoder(kAltEncType, kCPR);
         leftEncoder.setPositionConversionFactor(encoderConversionValue);
-
 
         rightEncoder = spark4.getAlternateEncoder(kAltEncType, kCPR);
         rightEncoder.setPositionConversionFactor(encoderConversionValue);
 
-
     }
 
-    static void funnelInit(){
+    static void funnelInit() {
 
         roller1 = new WPI_TalonSRX(1);
         roller2 = new WPI_TalonSRX(2);
@@ -178,12 +178,21 @@ public class Constants {
     }
 
     static void cpArmInit() {
-        
+
         cpArm = new WPI_TalonSRX(7);
 
         cpArm.setNeutralMode(NeutralMode.Brake);
         cpArm.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
         cpArm.setSensorPhase(true);
+
+        colorSensor = new ColorSensorV3(I2C.Port.kOnboard);
+        colorMatcher = new ColorMatch();
+
+        colorMatcher.addColorMatch(kBlueTarget);
+        colorMatcher.addColorMatch(kGreenTarget);
+        colorMatcher.addColorMatch(kRedTarget);
+        colorMatcher.addColorMatch(kYellowTarget); 
+
 
     }
     static void liftInit(){

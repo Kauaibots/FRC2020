@@ -149,5 +149,22 @@ public class Lift extends SubsystemBase {
 
     
   }
+
+
+  public double getLift1Pos() {
+    return LiftSpark1.getEncoder().getPosition();
+  }
+
+  public double getLift2Pos() {
+    return LiftSpark2.getEncoder().getPosition();
+  }
+
+  public void zeroLift1Pos() {
+    LiftSpark1.getEncoder().setPosition(0);
+  }
  
+  public void zeroLift2Pos() {
+    LiftSpark2.getEncoder().setPosition(0);
+  }
+
 }

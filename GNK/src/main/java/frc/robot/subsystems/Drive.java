@@ -28,10 +28,10 @@ public class Drive extends SubsystemBase {
         SmartDashboard.putNumber("Rotate I: ", RobotPreferences.getRotateI());
         SmartDashboard.putNumber("Rotate D: ", RobotPreferences.getRotateD());
         
-        SmartDashboard.putBoolean("DriveDist PID Tune", false);
-        SmartDashboard.putNumber("DriveDist P: ", RobotPreferences.getDriveDistP());
-        SmartDashboard.putNumber("DriveDist I: ", RobotPreferences.getDriveDistI());
-        SmartDashboard.putNumber("DriveDist D: ", RobotPreferences.getDriveDistD());
+    //    SmartDashboard.putBoolean("DriveDist PID Tune", false);
+    //    SmartDashboard.putNumber("DriveDist P: ", RobotPreferences.getDriveDistP());
+    //    SmartDashboard.putNumber("DriveDist I: ", RobotPreferences.getDriveDistI());
+    //    SmartDashboard.putNumber("DriveDist D: ", RobotPreferences.getDriveDistD());
 
     }
 
@@ -49,10 +49,10 @@ public class Drive extends SubsystemBase {
         SmartDashboard.putNumber("Yaw", getYaw());
 
         if (Robot.robotContainer.driveStick.getRawButton(3)) {
-            zeroEncoder(EncoderEnum.MIDDLE);
+    //        zeroEncoder(EncoderEnum.MIDDLE);
         }
 
-        if (Robot.robotContainer.driveStick.getRawButton(4)) {
+        if (Robot.robotContainer.driveStick.getRawButton(6)) {
             zeroYaw();
         }
 
@@ -75,7 +75,6 @@ public class Drive extends SubsystemBase {
     public void setDrive(double vY, double vRot) {
         robotDrive.arcadeDrive(vY, vRot);
 
-        //setStraightDrive(vY);
     }
 
     public void setStraightDrive(double vY) {
@@ -102,6 +101,10 @@ public class Drive extends SubsystemBase {
         Constants.m_left.setVoltage(leftVolts);
         Constants.m_right.setVoltage(-rightVolts);
         Constants.robotDrive.feed();
+    }
+
+    public double getDrivePower(){
+        return (Constants.spark1.get()+Constants.spark4.get())/2;
     }
 
     public Pose2d getPose() {
@@ -171,6 +174,10 @@ public class Drive extends SubsystemBase {
 
     public double getYaw() {
         return Constants.imu.getYaw();
+    }
+
+    public double getPitch() {
+        return Constants.imu.getPitch();
     }
 
     public double getTurnRate() {

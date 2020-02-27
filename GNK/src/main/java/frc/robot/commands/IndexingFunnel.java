@@ -69,10 +69,10 @@ public class IndexingFunnel extends CommandBase {
         funnel.setRoller(3, power);
         funnel.setRoller(4, power);
         funnel.setRoller(5, power);
-        if (timer > 15) {
+        if (timer > 10) {
             funnel.setRoller(2, power);
         }
-        if (timer > 30) {
+        if (timer > 20) {
             funnel.setRoller(1, power);
         }
     }

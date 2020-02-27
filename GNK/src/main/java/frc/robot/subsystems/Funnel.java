@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Robot;
 
     public class Funnel extends SubsystemBase {
 
@@ -76,9 +77,14 @@ import frc.robot.Constants;
         }
             
         public void setRoller1(double power) {
-            roller1.set(power*.65);
-            if (power > 0) {
-                setIntake(.7);
+            if (Robot.drive.getDrivePower() < -.6){
+                roller1.set(power*.8);
+            }
+            else {
+                roller1.set(power*.65);
+            }
+            if (power != 0) {
+                setIntake(.7*(Math.abs(power)/power));
             }
             else {
                 setIntake(0);
@@ -134,6 +140,7 @@ import frc.robot.Constants;
             }
             else if (ballFill == 2) { //If four balls
                 setRoller(1, power*.4);
+                setRoller(2, power*.1);
                 stageToMove = 0;
             }
             else if (ballFill == 1) { //If five balls

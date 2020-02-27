@@ -1,79 +1,107 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
-import edu.wpi.first.wpilibj2.command.PIDCommand;
-import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
-import edu.wpi.first.wpiutil.math.MathUtil;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
-import frc.robot.RobotPreferences;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Drive.EncoderEnum;
 
 
-public class DriveDistance extends ProfiledPIDCommand  {
+public class DriveDistance extends CommandBase  {
 
 
     private final static Drive drive = Robot.drive;
 
+    private double target = 0;
     private final double tolerance = .75;
-    private final double dTolerance = 1/12;
+
+    private int counter;
+    private int timer;
 
     
     public DriveDistance(double inches) {
 
-        super(
-            new ProfiledPIDController(RobotPreferences.getDriveDistP(), RobotPreferences.getDriveDistI(),
-                                      RobotPreferences.getDriveDistD(), new TrapezoidProfile.Constraints(
-                                        10/12, //Inches per second
-                                        1/12)), //Inches per second per second
-            // Close loop on heading
-            drive::getAverageEncoder,
-            // Set reference to target
-            inches,
-            // Pipe output to turn robot
-            (output, setpoint) -> drive.setStraightDrive(output),
-            // Require the drive
-            drive);
-
-        getController().disableContinuousInput();
-
-        getController().setTolerance(tolerance, dTolerance);
+        target = inches;
 
 
     }
 
         @Override
         public void initialize() {
-            super.initialize();
 
             drive.zeroEncoder(EncoderEnum.MIDDLE);
+            counter = 0;
+            timer = 0;
 
             SmartDashboard.putBoolean("Drive Distance Active", true);
 
-            drive.updateDriveDistPID();
-    
-            getController().setPID(RobotPreferences.getDriveDistP(), RobotPreferences.getDriveDistI(),
-                    RobotPreferences.getDriveDistD());
 
 
         }
 
         @Override
         public void execute() {
-            super.execute();
 
-            SmartDashboard.putNumber("Drive Distance Error", getController().getPositionError());
-            SmartDashboard.putNumber("Drive Distance Setpoint", getController().getSetpoint().position);
+            timer++;
+
+            double error = target-drive.getAverageEncoder();
+            double absError = Math.abs(error);
+
+
+            double power = 0;
+
+            if (absError > 25) {
+                power = .7;
+                if (timer < 10) {
+                    power *= timer/10;
+                }
+            }
+            else if (absError > 20) {
+                power = .5;
+            }
+            else if (absError > 10) {
+                power = .35;
+            }
+            else if (absError > 4) {
+                power = .29;
+            }
+            else if (absError > tolerance) {
+                power = .1;
+            }
+            else {
+                power = 0;
+            }
+
+            power *= (error != 0)? (absError/error): 1; //Inverts the output power if negative and protects against dividing by 0
+    
+    
+            if (absError > tolerance) {
+                counter = 0;
+            }
+            else {
+                counter++;
+            }
+
+
+            drive.setStraightDrive(power);
+
+
+
+            SmartDashboard.putNumber("Drive Distance Error", error);
+            SmartDashboard.putNumber("Drive Distance Setpoint", target);
             SmartDashboard.putNumber("Drive Distance Current", drive.getAverageEncoder());
 
-        }
+        }        
+        
+        
+
+        
+        
+        
 
         @Override
         public boolean isFinished() {
-            return getController().atSetpoint();
+            return counter > 10;
         }
 
         @Override
