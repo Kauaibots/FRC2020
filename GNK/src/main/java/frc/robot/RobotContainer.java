@@ -29,7 +29,6 @@ import frc.robot.Autonomous.CPRotate;
 import frc.robot.Autonomous.CPToColor;
 import frc.robot.commands.ArmGoToPosition;
 import frc.robot.commands.AutoRotate;
-import frc.robot.commands.CPRollerRotate;
 import frc.robot.commands.DriveDistance;
 import frc.robot.commands.IndexingFunnel;
 import frc.robot.commands.LevelingLift;
@@ -65,15 +64,25 @@ public class RobotContainer {
 
     public Joystick driveStick = new Joystick(0);
     public Joystick arduino = new Joystick(1);
+    
+    Button LiftUp;
+    Button LiftDown;
+    Button LiftUp2;
+    Button LiftDown2;
+    Button LiftUpAll;
+    Button LiftDownAll;
 
+    //public JoystickButton rotate0;
+    //public JoystickButton rotate90;
+    //public JoystickButton rotate180;
+    //public JoystickButton rotateNeg90;
 
-    public JoystickButton funnelIndex;
-    public JoystickButton funnelDump;
-    public JoystickButton funnelReverse1;
-    public JoystickButton funnelReverseAll;
+    public JoystickButton drive10;
+    public JoystickButton driveNeg10;
+    public JoystickButton drive20;
 
-    public JoystickButton cpRotate;
-    public JoystickButton cpColor;
+    public JoystickButton funnelIntake;
+    public JoystickButton funnelOuttake;
 
     public JoystickButton liftUp;
     public JoystickButton liftDown;
@@ -117,20 +126,23 @@ public class RobotContainer {
     private void configureButtonBindings() {
 
         //Drive button bindings
+        //rotate0 = new JoystickButton(driveStick, 7);
+        //rotate90 = new JoystickButton(driveStick, 8);
+        //rotate180 = new JoystickButton(driveStick, 10);
+        //rotateNeg90 = new JoystickButton(driveStick, 9);
 
-
-
+        drive10 = new JoystickButton(driveStick, 9);
+        drive20 = new JoystickButton(driveStick, 7);
+        driveNeg10 = new JoystickButton(driveStick, 10);
 
 
         //Funnel Button Bindings
-        funnelIndex = new JoystickButton(driveStick, 12);
-        funnelDump = new JoystickButton(driveStick, 11);
-        funnelReverse1 = new JoystickButton(driveStick, 10);
-        funnelReverseAll = new JoystickButton(driveStick, 9);
+        funnelIntake = new JoystickButton(driveStick, 12);
+        funnelOuttake = new JoystickButton(driveStick, 11);
 
         //Control Panel Button Bindings
-        cpRotate = new JoystickButton(driveStick, 3);
-        cpColor = new JoystickButton(driveStick, 4);
+        //cpRotate = new JoystickButton(driveStick, 3);
+        //cpColor = new JoystickButton(driveStick, 4);
 
         cpUpTest = new JoystickButton(arduino, 2);
         cpDownTest = new JoystickButton(arduino, 1);
@@ -147,14 +159,21 @@ public class RobotContainer {
         
 
 
+        //rotate0.whenPressed(new AutoRotate(0).withTimeout(5));
+        //rotate90.whenPressed(new AutoRotate(90).withTimeout(5));
+        //rotate180.whenPressed(new AutoRotate(180).withTimeout(5));
+        //rotateNeg90.whenPressed(new AutoRotate(-90).withTimeout(5));
+
+        drive10.whenPressed(new DriveDistance(20).withTimeout(5));
+        drive20.whenPressed(new DriveDistance(40).withTimeout(5));
+        driveNeg10.whenPressed(new DriveDistance(-20).withTimeout(5));
+
+
       
 
         //Funnel button actions
-        funnelIndex.whileHeld(new IndexingFunnel(FunnelState.COLLECT));
-        funnelDump.whileHeld(new IndexingFunnel(FunnelState.DUMP));
-        funnelReverse1.whileHeld(new IndexingFunnel(FunnelState.REVERSE1));
-        funnelReverseAll.whileHeld(new IndexingFunnel(FunnelState.REVERSEALL));
-
+        funnelIntake.whileHeld(new IndexingFunnel(FunnelState.COLLECT));
+        funnelOuttake.whileHeld(new IndexingFunnel(FunnelState.DUMP));
 
         //Control Panel button actions
         //cpRotate.whenPressed(new CPRotate());
