@@ -25,6 +25,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Autonomous.CPRotate;
+import frc.robot.Autonomous.CPToColor;
 import frc.robot.commands.ArmGoToPosition;
 import frc.robot.commands.AutoRotate;
 import frc.robot.commands.CPRollerRotate;
@@ -75,6 +77,15 @@ public class RobotContainer {
 
     public JoystickButton liftUp;
     public JoystickButton liftDown;
+    public JoystickButton altLiftDown;
+
+
+    public JoystickButton cpUpTest;
+    public JoystickButton cpDownTest;
+
+    public JoystickButton test1;
+    public JoystickButton test2;
+
 
     
 
@@ -120,10 +131,19 @@ public class RobotContainer {
         //Control Panel Button Bindings
         cpRotate = new JoystickButton(driveStick, 3);
         cpColor = new JoystickButton(driveStick, 4);
+
+        cpUpTest = new JoystickButton(arduino, 2);
+        cpDownTest = new JoystickButton(arduino, 1);
       
         //Lift Button Bindings
         liftUp = new JoystickButton(driveStick, 8);
         liftDown = new JoystickButton(driveStick, 7);
+        altLiftDown = new JoystickButton(driveStick, 2);
+
+
+        //Test Button Bindings
+        test1 = new JoystickButton(arduino, 3);
+        test2 = new JoystickButton(arduino, 4);
         
 
 
@@ -137,11 +157,26 @@ public class RobotContainer {
 
 
         //Control Panel button actions
-        cpRotate.whenPressed(new CPRollerRotate());
-        cpColor.whenPressed(new ArmGoToPosition(ControlPosition.DOWN));
+        //cpRotate.whenPressed(new CPRotate());
+        //cpColor.whenPressed(new CPToColor());
       
+        cpUpTest.whenPressed(new ArmGoToPosition(ControlPosition.UP));
+        cpDownTest.whenPressed(new ArmGoToPosition(ControlPosition.DOWN));
+
       
         //Lift button actions
+
+        //liftUp.whileHeld(new LiftManual(LiftMotion.UP));
+        //altLiftDown.whileHeld(new LiftManual(LiftMotion.DOWN));
+
+
+        liftUp.whileHeld(new LevelingLift(LiftMotion.UP));
+        liftDown.whileHeld(new LevelingLift(LiftMotion.DOWN));
+
+
+        //Test button actions
+        test1.whenPressed(new DriveDistance(50));
+        test2.whenPressed(new DriveDistance(-50));
 
         
         
@@ -159,16 +194,16 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
 
-        configurePathFinder();
+        
 
-        return new StickDrive(drive);
+        return configurePathFinder();
     }
 
-    public void configurePathFinder() {
-        String trajectoryJSON = "paths/Test.wpilib.json";
+    public Command configurePathFinder() {
+        String trajectoryJSON = "Test.wpilib.json";
 
         Path trajectoryPath;
-        Trajectory trajectory;
+        Trajectory trajectory = null;
 
         try {
         trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
@@ -178,21 +213,23 @@ public class RobotContainer {
         DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
         }
 
-    /*    RamseteCommand ramseteCommand = new RamseteCommand(
+        RamseteCommand ramseteCommand = new RamseteCommand(
             trajectory,
-            Constants.robotDrive::getPose,
-            new RamseteController(AutoConstants.kRamseteB, AutoConstants.kRamseteZeta),
-            new SimpleMotorFeedforward(DriveConstants.ksVolts,
-                                       DriveConstants.kvVoltSecondsPerMeter,
-                                       DriveConstants.kaVoltSecondsSquaredPerMeter),
-            DriveConstants.kDriveKinematics,
-            Constants.robotDrive::getWheelSpeeds,
-            new PIDController(DriveConstants.kPDriveVel, 0, 0),
-            new PIDController(DriveConstants.kPDriveVel, 0, 0),
+            drive::getPose,
+            new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta),
+            new SimpleMotorFeedforward(Constants.ksVolts,
+                                       Constants.kvVoltSecondsPerMeter,
+                                       Constants.kaVoltSecondsSquaredPerMeter),
+            Constants.kDriveKinematics,
+            drive::getWheelSpeeds,
+            new PIDController(Constants.kPDriveVel, 0, 0),
+            new PIDController(Constants.kPDriveVel, 0, 0),
             // RamseteCommand passes volts to the callback
-            Constants.robotDrive::tankDriveVolts,
-            Constants.robotDrive
-        );  */
+            drive::setTankVoltage,
+            drive
+        );  
+
+        return ramseteCommand.andThen(() -> drive.setDrive(0, 0));
     }
 
 }

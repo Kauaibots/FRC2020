@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.AnalogInput;
@@ -50,6 +51,23 @@ public class Constants {
     public static CANEncoder leftEncoder;
     public static CANEncoder rightEncoder;
 
+    //Characterization Variables
+    public static final double ksVolts = 0.177;
+    public static final double kvVoltSecondsPerMeter = 0.614;
+    public static final double kaVoltSecondsSquaredPerMeter = .142;
+
+    public static final double kPDriveVel = 6.52;
+
+    public static final double kTrackwidthMeters = 0.57785;
+    public static final DifferentialDriveKinematics kDriveKinematics =
+        new DifferentialDriveKinematics(kTrackwidthMeters);
+    public static final double kMaxSpeedMetersPerSecond = 3;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 3;
+
+    public static final double kRamseteB = 2;
+    public static final double kRamseteZeta = 0.7;
+    
+
 
 
     public static WPI_TalonSRX roller1;
@@ -77,7 +95,9 @@ public class Constants {
 
     private static final double driveRampRate = .25;
 
-    private final static double encoderConversionValue = 1 / (.51 / 10); // inverse of ticks per inch
+    public final static double encoderConversionInches = 1 / (.51 / 10); // inverse of ticks per inch
+    public final static double encoderConversionMeters = 1 / (2.0078);
+
 
     public static void init() {
 
@@ -136,10 +156,10 @@ public class Constants {
         robotDrive.setSafetyEnabled(false);
 
         leftEncoder = spark1.getAlternateEncoder(kAltEncType, kCPR);
-        leftEncoder.setPositionConversionFactor(encoderConversionValue);
+        leftEncoder.setPositionConversionFactor(encoderConversionInches);
 
         rightEncoder = spark4.getAlternateEncoder(kAltEncType, kCPR);
-        rightEncoder.setPositionConversionFactor(encoderConversionValue);
+        rightEncoder.setPositionConversionFactor(encoderConversionInches);
 
     }
 
@@ -198,9 +218,11 @@ public class Constants {
     static void liftInit(){
         Lift1 = new CANSparkMax(7, CANSparkMaxLowLevel.MotorType.kBrushless);
         Lift1.setInverted(false);
+        Lift1.setIdleMode(IdleMode.kBrake);
 
         Lift2 = new CANSparkMax(8, CANSparkMaxLowLevel.MotorType.kBrushless);
         Lift2.setInverted(true);
+        Lift2.setIdleMode(IdleMode.kBrake);
 
         Lift1Servo = new Servo(1);
         Lift2Servo = new Servo(3);

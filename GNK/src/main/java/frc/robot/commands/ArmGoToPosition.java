@@ -15,9 +15,9 @@ public class ArmGoToPosition extends CommandBase {
 
     int count = 0;
 
-    final int downPos = 50;
+    final int downPos = 100;
     final int upPos = 1100;
-    final int compressedPos = 1200;
+    final int compressedPos = 1150;
 
     public ArmGoToPosition(ControlPosition position) {
 

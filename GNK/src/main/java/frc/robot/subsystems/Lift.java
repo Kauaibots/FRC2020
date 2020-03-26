@@ -134,7 +134,7 @@ public class Lift extends SubsystemBase {
   public void setServoUnlocked()
   {
     Lift1Servo.set(.4);
-    Lift2Servo.set(0);
+    Lift2Servo.set(.2);
   }
   public boolean getServosUnlocked()
   {

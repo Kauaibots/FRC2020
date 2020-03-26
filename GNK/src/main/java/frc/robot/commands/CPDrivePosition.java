@@ -17,7 +17,7 @@ public class CPDrivePosition extends CommandBase {
   Drive drive = Robot.drive;
   ControlPanel cp = Robot.cPanel;
 
-  double drivePower = 0.4;
+  double drivePower = 0.25;
 
   boolean finished;
  

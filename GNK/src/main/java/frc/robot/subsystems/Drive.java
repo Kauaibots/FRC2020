@@ -20,6 +20,8 @@ public class Drive extends SubsystemBase {
     private double leftEncoderOffset = 0;
     private double rightEncoderOffset = 0;
 
+    private boolean useInches = false;
+
 
     public Drive() {
         
@@ -32,6 +34,10 @@ public class Drive extends SubsystemBase {
     //    SmartDashboard.putNumber("DriveDist P: ", RobotPreferences.getDriveDistP());
     //    SmartDashboard.putNumber("DriveDist I: ", RobotPreferences.getDriveDistI());
     //    SmartDashboard.putNumber("DriveDist D: ", RobotPreferences.getDriveDistD());
+
+    zeroEncoder(EncoderEnum.RAWMIDDLE);
+    zeroEncoder(EncoderEnum.MIDDLE);
+    
 
     }
 
@@ -47,12 +53,13 @@ public class Drive extends SubsystemBase {
         SmartDashboard.putNumber("Encoder CPR", Constants.leftEncoder.getCountsPerRevolution());
 
         SmartDashboard.putNumber("Yaw", getYaw());
-
-        if (Robot.robotContainer.driveStick.getRawButton(3)) {
-    //        zeroEncoder(EncoderEnum.MIDDLE);
-        }
+        SmartDashboard.putNumber("NavX Pitch", getRoll());
 
         if (Robot.robotContainer.driveStick.getRawButton(6)) {
+            zeroEncoder(EncoderEnum.MIDDLE);
+        }
+
+        if (Robot.robotContainer.driveStick.getRawButton(5)) {
             zeroYaw();
         }
 
@@ -65,6 +72,7 @@ public class Drive extends SubsystemBase {
 
 
 
+        configureUseInches();
 
         Constants.m_odometry.update(Rotation2d.fromDegrees(getYaw()), inchToMeter(getEncoder(EncoderEnum.RAWLEFT)), inchToMeter(getEncoder(EncoderEnum.RAWRIGHT)));
 
@@ -94,12 +102,16 @@ public class Drive extends SubsystemBase {
             rightPower *= 0.9;
         }
 
+        SmartDashboard.putNumber("Straight Drive Left", leftPower);
+        SmartDashboard.putNumber("Straight Drive Right", rightPower);
+
+
         robotDrive.tankDrive(leftPower, rightPower);
     }
 
     public void setTankVoltage(double leftVolts, double rightVolts) {
         Constants.m_left.setVoltage(leftVolts);
-        Constants.m_right.setVoltage(-rightVolts);
+        Constants.m_right.setVoltage(rightVolts);
         Constants.robotDrive.feed();
     }
 
@@ -169,15 +181,15 @@ public class Drive extends SubsystemBase {
     }
 
     public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-        return new DifferentialDriveWheelSpeeds(Constants.leftEncoder.getVelocity(), Constants.leftEncoder.getVelocity());
+        return (new DifferentialDriveWheelSpeeds(Constants.leftEncoder.getVelocity(), Constants.leftEncoder.getVelocity()));
       }
 
     public double getYaw() {
         return Constants.imu.getYaw();
     }
 
-    public double getPitch() {
-        return Constants.imu.getPitch();
+    public double getRoll() {
+        return Constants.imu.getRoll();
     }
 
     public double getTurnRate() {
@@ -196,6 +208,20 @@ public class Drive extends SubsystemBase {
         return meter*39.37;
     }
 
+    public void useInches(boolean useInches) {
+        this.useInches = useInches;
+    }
+
+    public void configureUseInches() {
+        if (useInches) {
+            Constants.leftEncoder.setPositionConversionFactor(Constants.encoderConversionInches);
+            Constants.rightEncoder.setPositionConversionFactor(Constants.encoderConversionInches);
+        }
+        else {
+            Constants.leftEncoder.setPositionConversionFactor(Constants.encoderConversionMeters);
+            Constants.rightEncoder.setPositionConversionFactor(Constants.encoderConversionMeters);
+        }
+    }
 
     public void updateRotatePID() {
         RobotPreferences.setRotateP(SmartDashboard.getNumber("Rotate P: ", 0.0));

@@ -28,7 +28,7 @@ public class CPToColor extends SequentialCommandGroup {
 
       new ArmGoToPosition(ControlPosition.UP).withTimeout(1),
       new CPDrivePosition().withTimeout(4),
-      new ArmGoToPosition(ControlPosition.COMPRESS).withTimeout(1),
+      //new ArmGoToPosition(ControlPosition.COMPRESS).withTimeout(1),
       new CPColor().withTimeout(4),
       new ArmGoToPosition(ControlPosition.DOWN).withTimeout(1)
 

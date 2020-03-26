@@ -23,11 +23,15 @@ public class DriveDistance extends CommandBase  {
 
         target = inches;
 
+        addRequirements(drive);
+
 
     }
 
         @Override
         public void initialize() {
+
+            
 
             drive.zeroEncoder(EncoderEnum.MIDDLE);
             counter = 0;
@@ -53,7 +57,7 @@ public class DriveDistance extends CommandBase  {
             if (absError > 25) {
                 power = .7;
                 if (timer < 10) {
-                    power *= timer/10;
+                    //power *= timer/10;
                 }
             }
             else if (absError > 20) {
@@ -63,10 +67,10 @@ public class DriveDistance extends CommandBase  {
                 power = .35;
             }
             else if (absError > 4) {
-                power = .29;
+                power = .3;
             }
             else if (absError > tolerance) {
-                power = .1;
+                power = .15;
             }
             else {
                 power = 0;
@@ -74,6 +78,8 @@ public class DriveDistance extends CommandBase  {
 
             power *= (error != 0)? (absError/error): 1; //Inverts the output power if negative and protects against dividing by 0
     
+
+            SmartDashboard.putNumber("Drive Dist Power", power);
     
             if (absError > tolerance) {
                 counter = 0;

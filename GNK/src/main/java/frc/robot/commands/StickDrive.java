@@ -14,6 +14,8 @@ public class StickDrive extends CommandBase {
 
 	static final double DEADZONE = .07;
 
+	private final double veeringDeadzone = 0.1;
+
 	public class JoystickResponseCurve {
 		double adjust;
 		double power;
@@ -67,11 +69,11 @@ public class StickDrive extends CommandBase {
 			new JoystickResponseCurve(.00, 0, 0, DEADZONE), new JoystickResponseCurve(.00, 3, 1.0, DEADZONE));
 
 	JoystickResponseCurveSet conservative = new JoystickResponseCurveSet(
-			new JoystickResponseCurve(.40, 3, .80, DEADZONE), new JoystickResponseCurve(0, 0, 0, DEADZONE),
-			new JoystickResponseCurve(.40, 3, .80, DEADZONE));
+			new JoystickResponseCurve(.40, 3, .80, DEADZONE), new JoystickResponseCurve(.40, 3, .80, DEADZONE),
+			new JoystickResponseCurve(.30, 3, .60, DEADZONE));
 
 	JoystickResponseCurveSet aggressive = new JoystickResponseCurveSet(new JoystickResponseCurve(.40, 3, 1.0, DEADZONE),
-			new JoystickResponseCurve(0, 0, 0, DEADZONE), new JoystickResponseCurve(.40, 3, 1.0, DEADZONE));
+			new JoystickResponseCurve(.40, 3, 1.0, DEADZONE), new JoystickResponseCurve(.40, 3, 1.0, DEADZONE));
 
 	public StickDrive(final Drive drive) {
 		addRequirements(drive);
@@ -91,15 +93,29 @@ public class StickDrive extends CommandBase {
 		final Joystick driver = Robot.robotContainer.driveStick;
 
 		double vY = -driver.getY();
-		double vRot = driver.getRawAxis(4);
+		double vRot = 0;
+		double joyX = driver.getX();
+		double joyRot = driver.getRawAxis(4);
+		boolean veering = false;
 
-		if (driver.getRawButton(1)) {
+
+		if (Math.abs(joyX) >= Math.abs(joyRot)) {
+			vRot = (vY < 0)? joyX*-1:joyX;
+			veering = true;
+		}
+		else {
+			vRot = joyRot;
+			veering = false;
+		}
+
+
+		if (!driver.getRawButton(1)) {
 			vY = slow.transformForward(vY);
-			vRot = slow.transformRotate(vRot);
+			vRot = veering? slow.transformStrafe(vRot):slow.transformRotate(vRot);
 			SmartDashboard.putBoolean("Slow Drive Profile", true);
 		} else {
 			vY = fast.transformForward(vY);
-			vRot = fast.transformRotate(vRot);
+			vRot = veering? fast.transformStrafe(vRot):fast.transformRotate(vRot);
 			SmartDashboard.putBoolean("Slow Drive Profile", false);
 		}
 

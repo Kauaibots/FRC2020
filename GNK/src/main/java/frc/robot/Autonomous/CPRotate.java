@@ -27,7 +27,7 @@ public class CPRotate extends SequentialCommandGroup {
 
       new ArmGoToPosition(ControlPosition.UP).withTimeout(1),
       new CPDrivePosition().withTimeout(4),
-      new ArmGoToPosition(ControlPosition.COMPRESS).withTimeout(1),
+      //new ArmGoToPosition(ControlPosition.COMPRESS).withTimeout(1),
       new CPRollerRotate().withTimeout(4),
       new ArmGoToPosition(ControlPosition.DOWN).withTimeout(1)
 

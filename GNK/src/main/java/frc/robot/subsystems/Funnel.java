@@ -84,7 +84,7 @@ import frc.robot.Robot;
                 roller1.set(power*.65);
             }
             if (power != 0) {
-                setIntake(.7*(Math.abs(power)/power));
+                setIntake(.9*(Math.abs(power)/power));
             }
             else {
                 setIntake(0);
@@ -127,7 +127,7 @@ import frc.robot.Robot;
             setRollerUpTo(5, 0);
 
             if (ballFill == 5) { //If one ball
-                setRoller(4, power*.5);
+                setRoller(4, power*.6);
                 stageToMove = 3;
             }
             else if (ballFill == 4) { //If two balls
@@ -150,7 +150,7 @@ import frc.robot.Robot;
                 stageToMove = 0;
             }
             else if (ballFill == 6) { //If empty
-                setRoller(5, power*.2);
+                setRoller(5, power*.075);
                 stageToMove = 4;
             }
 

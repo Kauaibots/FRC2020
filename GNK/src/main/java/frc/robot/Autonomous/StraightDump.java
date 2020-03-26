@@ -25,8 +25,8 @@ public class StraightDump extends SequentialCommandGroup {
     // super(new FooCommand(), new BarCommand());
     super(
 
-    new DriveDistance(120-34).withTimeout(6),
-    new IndexingFunnel(FunnelState.DUMP).withTimeout(2)
+    new DriveDistance(120-32).withTimeout(3),
+    new IndexingFunnel(FunnelState.DUMP).withTimeout(1.5)
 
 
     );

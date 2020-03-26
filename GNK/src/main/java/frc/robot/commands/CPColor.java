@@ -49,7 +49,7 @@ boolean onTarget;
     cp.setArm(.1);
 
     if (currentColor != targetColor) {
-      funnel.setIntake(.3);
+      funnel.setIntake(.32);
       onTarget = false;
     }
     else {

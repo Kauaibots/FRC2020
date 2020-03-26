@@ -51,7 +51,7 @@ public class IndexingFunnel extends CommandBase {
                 funnel.setRoller5(0);
                 break;
             case REVERSEALL:
-                funnel.setRoller(5, -power);
+                funnel.setRollerUpTo(5, -power);
                 break;
             case COLLECT:
                 funnel.collectLemons(power);
@@ -72,7 +72,7 @@ public class IndexingFunnel extends CommandBase {
         if (timer > 10) {
             funnel.setRoller(2, power);
         }
-        if (timer > 20) {
+        if (timer > 15) {
             funnel.setRoller(1, power);
         }
     }

@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 import frc.robot.subsystems.Drive;
@@ -101,22 +102,25 @@ public class LevelingLift extends CommandBase {
     else if (lift1Pos < lift2Pos) {
       power1 *= 1.05;
       power2 *= .95;
+
+      lift.setLift1(power1);
+      lift.setLift2(power2);
     }
 
   }
 
   public void leveledRectraction() {
-    double pitch = drive.getPitch();
+    double roll = drive.getRoll();
 
     double power1 = -power;
     double power2 = -power;
 
-    if (pitch < -2) {
+    if (roll < -2) {
       power1 *= 1.05;
-      power2 *= .85;
+      power2 *= .75;
     }
-    if (pitch > 2) {
-      power1 *= .85;
+    if (roll > 2) {
+      power1 *= .75;
       power2 *= 1.05;
     }
 

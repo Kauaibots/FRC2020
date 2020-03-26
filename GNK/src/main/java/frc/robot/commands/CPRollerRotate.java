@@ -36,8 +36,8 @@ public class CPRollerRotate extends CommandBase {
   @Override
   public void execute() {
 
-    cp.setArm(.1);
-    funnel.setIntake(.3);
+    cp.setArm(.15);
+    funnel.setIntake(.6);
 
   }
 
